@@ -1,0 +1,53 @@
+{
+    "defaultSeverity": "error",
+    "extends": [ "tslint:recommended", "tslint-react", "tslint-config-airbnb", "tslint-config-prettier", "tslint-etc" ],
+    "jsRules": {},
+    "rules": {
+        "curly": false,
+        "comment-format": [ true, "check-space" ],
+        "function-name": false,
+        "import-name": false,
+        "interface-name": false,
+        "jsx-boolean-value": false,
+        "jsx-no-lambda": false,
+        "jsx-no-multiline-js": false,
+        "member-access": false,
+        "no-console": [ false, "debug", "dir", "log", "trace", "warn" ],
+        "no-empty-interface": false,
+        "no-namespace": false,
+        "no-reference": false,
+        "no-unused-declaration": true,
+        "no-consecutive-blank-lines": true,
+        "object-literal-sort-keys": false,
+        "object-shorthand-properties-first": false,
+        "prefer-array-literal": false,
+        "prefer-template": false,
+        "semicolon": true,
+        "strict-boolean-expressions": false,
+        "ter-arrow-parens": false,
+        "ter-indent": false,
+        "array-callback-return": false,
+        "variable-name": [
+            true,
+            "allow-pascal-case",
+            "ban-keywords",
+            "check-format"
+        ],
+        "quotemark": [ true, "single", "avoid-escape" ],
+        "trailing-comma": [
+            true,
+            {
+                "multiline": "always",
+                "singleline": "never"
+            }
+        ],
+        "ordered-imports": [
+            true,
+            {
+                "import-sources-order": "lowercase-last",
+                "named-imports-order": "lowercase-first"
+            }
+        ]
+    },
+    "rulesDirectory": []
+}
