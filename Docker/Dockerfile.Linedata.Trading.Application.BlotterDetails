@@ -1,0 +1,14 @@
+FROM node:10.16-alpine
+WORKDIR /app
+COPY . .
+RUN npm install -g local-web-server@3.0.7
+ENTRYPOINT sed -i 's@%BACKEND_URL%@'"$BackendUrl"'@g' *.js && \
+    sed -i 's@%APP_CHANNEL_TYPE%@'"$AppChannelTypeEnum"'@g' *.js && \
+    sed -i 's@%AUTHORITY%@'"$Authority"'@g' *.js && \
+    sed -i 's@%CLIENT_ID%@'"$ClientId"'@g' *.js && \
+    sed -i 's@%SCOPE%@'"$Scope"'@g' *.js && \
+    sed -i 's@%TRACE_URL%@'"$TraceUrl"'@g' *.js && \
+    sed -i 's@%TRACE_PROVIDER_TYPE%@'"$TraceProviderTypeEnum"'@g' *.js && \
+    sed -i 's@%TRACE_DOCUMENT_LOAD%@'"$TraceDocumentLoad"'@g' *.js && \
+    sed -i 's@%TRACE_LOG_LEVEL%@'"$TraceLogLevelEnum"'@g' *.js && \
+    ws -s index.html -r ''"$RootPath"'(.*) -> /$1' -p $Port -f common -z

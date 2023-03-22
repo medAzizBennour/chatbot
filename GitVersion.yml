@@ -1,0 +1,5 @@
+assembly-versioning-scheme: MajorMinorPatch
+mode: Mainline
+next-version: 2.0.0
+assembly-informational-format: '{Major}.{Minor}.{Patch}.{Sha}'
+branches: {}
