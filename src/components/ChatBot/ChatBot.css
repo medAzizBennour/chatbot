@@ -33,7 +33,7 @@
     line-height: 20px;
     border-radius: 15px 15px 15px 5px;
     padding: 10px 20px;
-    background-color: #4b0082;
+    background-color: rgb(7, 63, 115);
     box-sizing: border-box;
     white-space: pre-wrap;
     word-break: break-word;
@@ -44,11 +44,11 @@
     flex-direction: column;
     position: fixed;
 
-    box-shadow: 5px 20px rgb(0 0 0 / 10%);
+    box-shadow: 5px 20px rgb(7 63 115 / 10%);
     color: #fff;
     background-color: #fff;
 
-    border: 3px solid rgb(13, 13, 90);
+    border: 3px solid rgb(7, 63, 115);
     border-radius: 5px;
     max-width: 100%;
 
@@ -85,7 +85,11 @@
     justify-content: center;
     display: flex;
     flex-direction: row;
-    background: linear-gradient(#4b0082, rgb(13, 13, 90));
+    background: linear-gradient(
+        180deg,
+        rgb(7, 63, 115) 0%,
+        rgb(10, 41, 70) 86.7%
+    );
 }
 
 .header-text {
@@ -105,7 +109,7 @@
     width: 100%;
     background-color: transparent;
 
-    border-top: 3px solid #4b0082;
+    border-top: 3px solid rgb(7, 63, 115);
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
 

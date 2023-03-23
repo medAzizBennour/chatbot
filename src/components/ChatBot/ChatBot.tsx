@@ -272,7 +272,10 @@ const ChatBot = (): JSX.Element => {
                             onClick={startRecording}
                             children={
                                 <MicIcon
-                                    sx={{ color: "#4b0082", fontSize: "30px" }}
+                                    sx={{
+                                        color: "rgb(7, 63, 115) ",
+                                        fontSize: "30px",
+                                    }}
                                 />
                             }
                         />
@@ -281,7 +284,10 @@ const ChatBot = (): JSX.Element => {
                             onClick={stopRecording}
                             children={
                                 <SettingsVoiceIcon
-                                    sx={{ color: "#4b0082", fontSize: "30px" }}
+                                    sx={{
+                                        color: "rgb(7, 63, 115) ",
+                                        fontSize: "30px",
+                                    }}
                                 />
                             }
                         />
