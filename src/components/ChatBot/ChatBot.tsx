@@ -239,7 +239,7 @@ const ChatBot = (): JSX.Element => {
                 <img alt="logo" src={logo} className="logo" />
 
                 <div className="header-text">
-                    <h1 className="mt-1">Linedata Voice Assistant</h1>
+                    <h4 className="mt-2">Linedata Voice Assistant</h4>
                     <p className="intro-header ">
                         You're chatting with Linedata Bot
                     </p>
@@ -249,12 +249,9 @@ const ChatBot = (): JSX.Element => {
             <div className="divs-container" ref={divsContainerRef}>
                 {memoDivs.map((memoDiv) => (
                     <div className={memoDiv.type} key={memoDiv.id}>
-                        <h1>{memoDiv.text}</h1>
+                        <h4>{memoDiv.text}</h4>
                     </div>
                 ))}
-                <div className="bot-command" key={0}>
-                    <h1>Hello</h1>
-                </div>
             </div>
 
             <div className="input-container">

@@ -2,153 +2,139 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.body {
-  display: flex;
-  flex-direction: column;
-}
-
 .bot-command {
-  align-self: flex-start;
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  overflow-wrap: break-word;
-  color: rgba(61, 78, 99, 0.8);
-  width: fit-content;
-  text-align: left;
-  line-height: 20px;
-  border-radius: 15px 15px 15px 5px;
-  padding: 10px 20px;
-  background-color: rgb(237, 240, 247);
-  box-sizing: border-box;
-  display: inline-block;
-  white-space: pre-wrap;
-  word-break: break-word;
+    align-self: flex-start;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    overflow-wrap: break-word;
+    color: rgba(61, 78, 99, 0.8);
+    width: fit-content;
+    text-align: left;
+    line-height: 20px;
+    border-radius: 15px 15px 15px 5px;
+    padding: 10px 20px;
+    background-color: rgb(237, 240, 247);
+    box-sizing: border-box;
+    display: inline-block;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .user-command {
-  align-self: flex-end;
-  margin-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  overflow-wrap: break-word;
-  color: #fff;
-  width: fit-content;
-  text-align: right;
-  line-height: 20px;
-  border-radius: 15px 15px 15px 5px;
-  padding: 10px 20px;
-  background-color: #4b0082;
-  box-sizing: border-box;
-  white-space: pre-wrap;
-  word-break: break-word;
+    align-self: flex-end;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    overflow-wrap: break-word;
+    color: #fff;
+    width: fit-content;
+    text-align: right;
+    line-height: 20px;
+    border-radius: 15px 15px 15px 5px;
+    padding: 10px 20px;
+    background-color: #4b0082;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .panel {
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  bottom: 5px;
-  right: 5px;
-  box-shadow: 5px 20px rgb(0 0 0 / 10%);
-  color: #fff;
-  background-color: #fff;
-  width: 20vw;
-  height: 60vh;
-  border: 3px solid rgb(13, 13, 90);
-  border-radius: 5px;
-  max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+
+    box-shadow: 5px 20px rgb(0 0 0 / 10%);
+    color: #fff;
+    background-color: #fff;
+
+    border: 3px solid rgb(13, 13, 90);
+    border-radius: 5px;
+    max-width: 100%;
+
+    width: 40%;
+    height: 80%;
+
+    bottom: 1%;
+
+    right: 2%;
 }
 .intro-header {
-  font-size: 10px;
-  opacity: 0.6;
-  margin: 1px 2px 1px 0px;
+    font-size: 10px;
+    opacity: 0.6;
+    margin: 1px 2px 1px 0px;
 }
 
 .response {
-  text-align: right;
+    text-align: right;
 }
 
 .iconButton {
-  color: #fff;
-  width: 5vw;
+    color: #fff;
+    width: 5vw;
 }
 
 .logo {
-  max-width: 100%;
-  height: 45px;
-  width: 45px;
+    max-width: 100%;
+    height: 45px;
+    width: 45px;
 }
 .header {
-  padding: 5px;
-  border-radius: 2px;
-  justify-content: center;
-  display: flex;
-  flex-direction: row;
-  background: linear-gradient(#4b0082, rgb(13, 13, 90));
+    padding: 5px;
+    border-radius: 2px;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    background: linear-gradient(#4b0082, rgb(13, 13, 90));
 }
 
 .header-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .input-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  justify-content: flex-end;
-  width: 100%;
-  background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    justify-content: flex-end;
+    width: 100%;
+    background-color: transparent;
 
-  border-top: 3px solid #4b0082;
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
+    border-top: 3px solid #4b0082;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
 
-  padding: 3px;
+    padding: 3px;
 }
 .text-input {
-  color: black;
-  font-size: 14px;
-  font-weight: 500;
-  width: 100%;
-  box-shadow: inset;
-  border-radius: 5px;
-  margin: 2px;
-  background-color: rgb(234, 240, 246);
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+    box-shadow: inset;
+    border-radius: 5px;
+    margin: 2px;
+    background-color: rgb(234, 240, 246);
 }
 
 textarea:focus {
-  outline: none;
+    outline: none;
 }
 .text-input textarea {
-  background-color: inherit;
-  width: 100%;
-  border-radius: inherit;
-  padding: 5px;
+    background-color: inherit;
+    width: 100%;
+    border-radius: inherit;
+    padding: 5px;
 }
 
 .divs-container {
-  display: flex;
-  flex-direction: column;
-  max-height: 72.5%;
-  overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    max-height: 72.5%;
+    overflow-y: auto;
 }
