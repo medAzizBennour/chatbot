@@ -8,6 +8,8 @@ import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
 import { IconButton } from "@mui/material";
 
 import logo from "../../assets/images/linedata_logo.png";
+import img from "../../assets/images/chatbot.png";
+
 import io, { Socket } from "socket.io-client";
 import { addBotCommand, addUserCommand } from "../../store/actions";
 
@@ -24,6 +26,8 @@ const ChatBot = (): JSX.Element => {
     const processorRef = useRef<AudioWorkletNode | null>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
     const chunksRef = useRef<Float32Array[]>([]);
+
+    const [chatOpen, setChatOpen] = useState(false);
 
     useEffect(() => {
         socketRef.current = io("http://localhost:5000/");
@@ -232,67 +236,91 @@ const ChatBot = (): JSX.Element => {
             setCommand("");
         }
     };
+    const hide = {
+        display: "none",
+    };
+    const show = {
+        display: "block",
+    };
 
+    const toggle = () => {
+        setChatOpen(!chatOpen);
+    };
     return (
-        <div className="panel">
-            <div className="header">
-                <img alt="logo" src={logo} className="logo" />
+        <div className="App">
+            <div className="panel" style={chatOpen ? show : hide}>
+                <div className="header">
+                    <img alt="logo" src={logo} className="logo" />
 
-                <div className="header-text">
-                    <h4 className="mt-2">Linedata Voice Assistant</h4>
-                    <p className="intro-header ">
-                        You're chatting with Linedata Bot
-                    </p>
-                </div>
-            </div>
-
-            <div className="divs-container" ref={divsContainerRef}>
-                {memoDivs.map((memoDiv) => (
-                    <div className={memoDiv.type} key={memoDiv.id}>
-                        <h4>{memoDiv.text}</h4>
+                    <div className="header-text">
+                        <h4 className="mt-2">Linedata Voice Assistant</h4>
+                        <p className="intro-header ">
+                            You're chatting with Linedata Bot
+                        </p>
                     </div>
-                ))}
-            </div>
+                </div>
 
-            <div className="input-container">
-                <div className="text-input">
-                    <textarea
-                        onKeyDown={handleOnKeyDown}
-                        onSubmit={handleSubmit}
-                        placeholder="Give me a command"
-                        onChange={(e) => {
-                            setCommand(e.target.value);
-                        }}
-                        value={command}
-                    />
+                <div className="divs-container" ref={divsContainerRef}>
+                    {memoDivs.map((memoDiv) => (
+                        <div className={memoDiv.type} key={memoDiv.id}>
+                            <h4>{memoDiv.text}</h4>
+                        </div>
+                    ))}
                 </div>
-                <div>
-                    {!recording ? (
-                        <IconButton
-                            onClick={startRecording}
-                            children={
-                                <MicIcon
-                                    sx={{
-                                        color: "rgb(7, 63, 115) ",
-                                        fontSize: "30px",
-                                    }}
-                                />
-                            }
+
+                <div className="input-container">
+                    <div className="text-input">
+                        <textarea
+                            onKeyDown={handleOnKeyDown}
+                            onSubmit={handleSubmit}
+                            placeholder="Give me a command"
+                            onChange={(e) => {
+                                setCommand(e.target.value);
+                            }}
+                            value={command}
                         />
-                    ) : (
-                        <IconButton
-                            onClick={stopRecording}
-                            children={
-                                <SettingsVoiceIcon
-                                    sx={{
-                                        color: "rgb(7, 63, 115) ",
-                                        fontSize: "30px",
-                                    }}
-                                />
-                            }
-                        />
-                    )}
+                    </div>
+                    <div>
+                        {!recording ? (
+                            <IconButton
+                                onClick={startRecording}
+                                children={
+                                    <MicIcon
+                                        sx={{
+                                            color: "rgb(7, 63, 115) ",
+                                            fontSize: "30px",
+                                        }}
+                                    />
+                                }
+                            />
+                        ) : (
+                            <IconButton
+                                onClick={stopRecording}
+                                children={
+                                    <SettingsVoiceIcon
+                                        sx={{
+                                            color: "rgb(7, 63, 115) ",
+                                            fontSize: "30px",
+                                        }}
+                                    />
+                                }
+                            />
+                        )}
+                    </div>
                 </div>
+            </div>
+            <div className="pop">
+                <div className="button-wrapper">
+                    <button
+                        onClick={toggle}
+                        className="toggleButton"
+                        type="button"
+                    >
+                        <img src={img} alt="click her" />
+                    </button>
+                    <div className="toggleButton-bg"></div>
+                </div>
+                {/* <p onClick={toggle}><img onClick={toggle} src={img} alt="click her" /></p> */}
             </div>
         </div>
     );
