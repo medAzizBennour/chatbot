@@ -15,6 +15,7 @@
         "@liquify/popup-menu": "^1.0.3",
         "@liquify/status-content": "^1.0.1",
         "@liquify/theme": "^1.0.5",
+        "@mui/icons-material": "^5.11.11",
         "@mui/material": "^5.9.2",
         "@types/websocket": "^1.0.5",
         "ag-grid-community": "26.1.0",
@@ -46,9 +47,12 @@
         "react-scripts": "4.0.3",
         "react-smooth-dnd": "^0.11.1",
         "redux": "^4.0.1",
+        "socket.io-client": "^4.6.1",
         "styled-components": "^5.2.3",
         "uuid": "^8.3.2",
-        "websocket": "^1.0.34"
+        "websocket": "^1.0.34",
+        "@emotion/react": "^11.10.5",
+        "@emotion/styled": "^11.10.5"
     },
     "scripts": {
         "start": "set port=3016 && react-scripts start",
