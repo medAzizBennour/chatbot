@@ -8,7 +8,7 @@
     margin-top: 10px;
     margin-bottom: 5px;
     overflow-wrap: break-word;
-    color: rgba(61, 78, 99, 0.8);
+    color: rgba(28, 35, 44, 0.8);
     width: fit-content;
     text-align: left;
     line-height: 20px;
@@ -40,28 +40,27 @@
 }
 
 .App {
-    width: 400px;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    height: 95%;
     position: fixed;
-
-    bottom: 1%;
-
+    bottom: 5%;
     right: 2%;
 }
-
 .panel {
     display: flex;
     flex-direction: column;
-
-    box-shadow: 5px 20px rgb(7 63 115 / 10%);
+    box-shadow: 5px 5px rgb(7 63 115 / 10%);
     color: #fff;
-    background-color: #fff;
-
+    background-color: rgba(255, 255, 255, 0.808);
     border: 3px solid rgb(7, 63, 115);
     border-radius: 5px;
     width: 100%;
-    height: 100%;
+    height: 90%;
 }
+
 .intro-header {
     font-size: 10px;
     opacity: 0.6;
@@ -83,7 +82,7 @@
     width: 45px;
 }
 .header {
-    height: 20%;
+    height: 12%;
     padding: 5px;
     border-radius: 2px;
     justify-content: center;
@@ -107,7 +106,7 @@
     flex-direction: row;
     align-items: center;
     position: absolute;
-    bottom: 0;
+    bottom: 10%;
     right: 0;
     justify-content: flex-end;
     width: 100%;
@@ -148,17 +147,12 @@ textarea:focus {
 }
 
 .pop {
-    width: 13%;
-
-    height: 25%;
-
+    width: 8%;
+    height: 8%;
     cursor: pointer;
-
-    float: right;
-}
-
-.pop p {
-    text-align: right;
+    bottom: 5%;
+    right: 1%;
+    position: fixed;
 }
 
 .pop img {
@@ -179,7 +173,7 @@ textarea:focus {
     width: 100%;
 }
 
-.button-bg {
+.toggleButton-bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -192,7 +186,7 @@ textarea:focus {
         rgba(23, 23, 227, 1) 59%,
         rgba(172, 216, 228, 1) 100%
     );
-    background-size: 600% 600%;
+    background-size: 500% 500%;
     border-radius: 50px;
     animation: AnimateBorder 4s ease infinite;
     -webkit-animation: AnimateBorder 4s ease infinite;
