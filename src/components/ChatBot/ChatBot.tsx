@@ -13,61 +13,74 @@ import img from "../../assets/images/chatbot.png";
 import io, { Socket } from "socket.io-client";
 import { addBotCommand, addUserCommand } from "../../store/actions";
 
-const DOWNSAMPLING_WORKER = "./downsampling_worker.js";
-
 const ChatBot = (): JSX.Element => {
-    //     console.log("test");
-    const [recording, setRecording] = useState<boolean>(false);
+    const [recording, setRecording] = useState(false);
+    const [chatOpen, setChatOpen] = useState(false);
     const socketRef = useRef<Socket | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
-    const mediaStreamSourceRef = useRef<MediaStreamAudioSourceNode | null>(
-        null
-    );
-    const processorRef = useRef<AudioWorkletNode | null>(null);
-    const audioContextRef = useRef<AudioContext | null>(null);
     const chunksRef = useRef<Float32Array[]>([]);
+    const audioContextRef = useRef<AudioContext | null>(null);
+    const scriptProcessorRef = useRef<ScriptProcessorNode | null>(null);
 
-    const [chatOpen, setChatOpen] = useState(false);
+    const bufferSize = 2048;
+    const sampleRate = 16000;
+    const numChannels = 1;
 
-    useEffect(() => {
-        socketRef.current = io("http://localhost:5000/");
-        socketRef.current.on("connect", () => {
-            console.log("Connected to server");
-        });
-        socketRef.current.on("disconnect", () => {
-            console.log("Disconnected from server");
-        });
-        return () => {
-            socketRef.current?.disconnect();
-        };
-    }, []);
+    const startRecording = async () => {
+        try {
+            mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
+                video: false,
+                audio: true,
+            });
+            audioContextRef.current = new AudioContext();
+            scriptProcessorRef.current =
+                audioContextRef.current.createScriptProcessor(
+                    bufferSize,
+                    numChannels,
+                    numChannels
+                );
 
-    // const createAudioProcessor = (
-    //   audioContext: AudioContext,
-    //   audioSource: MediaStreamAudioSourceNode
-    // ): AudioWorkletNode => {
-    //   const downsamplingWorkletNode = new AudioWorkletNode(
-    //     audioContext,
-    //     'downsampling-processor'
-    //   );
+            scriptProcessorRef.current.onaudioprocess = (
+                audioProcessingEvent
+            ) => {
+                const inputBuffer = audioProcessingEvent.inputBuffer;
+                const inputData = inputBuffer.getChannelData(0);
 
-    //   const sampleRate = audioSource.context.sampleRate;
+                const downsampledData = downsampleBuffer(
+                    inputData,
+                    inputBuffer.sampleRate,
+                    sampleRate
+                );
+                if (socketRef.current?.connected) {
+                    socketRef.current.emit("stream-data", downsampledData);
+                }
+                if (recording) {
+                    chunksRef.current.push(downsampledData);
+                }
+            };
 
-    //   downsamplingWorkletNode.port.onmessage = (event) => {
-    //     if (socketRef.current?.connected) {
-    //       socketRef.current.emit('stream-data', event.data.buffer);
-    //     }
-    //   };
+            const sourceNode = audioContextRef.current.createMediaStreamSource(
+                mediaStreamRef.current
+            );
+            sourceNode.connect(scriptProcessorRef.current);
+            scriptProcessorRef.current.connect(
+                audioContextRef.current.destination
+            );
+            setRecording(true);
+        } catch (error) {
+            console.error("Error starting recording:", error);
+        }
+    };
 
-    //   downsamplingWorkletNode.parameters
-    //     ?.get('inputSampleRate')
-    //     ?.setValueAtTime(sampleRate, audioContext.currentTime);
-
-    //   audioSource.connect(downsamplingWorkletNode);
-    //   downsamplingWorkletNode.connect(audioContext.destination);
-
-    //   return downsamplingWorkletNode;
-    // };
+    const stopRecording = () => {
+        if (!recording) return;
+        scriptProcessorRef.current?.disconnect();
+        mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
+        audioContextRef.current?.close();
+        const blob = new Blob(chunksRef.current, { type: "audio/wav" });
+        sendAudioData(blob);
+        setRecording(false);
+    };
 
     const sendAudioData = async (blob: Blob) => {
         const formData = new FormData();
@@ -87,82 +100,52 @@ const ChatBot = (): JSX.Element => {
         }
     };
 
-    const startRecording = () => {
-        if (!recording) {
-            setRecording(true);
-            startMicrophone();
+    const downsampleBuffer = (
+        buffer: Float32Array,
+        inputSampleRate: number,
+        outputSampleRate: number
+    ) => {
+        if (inputSampleRate === outputSampleRate) {
+            return buffer;
         }
-    };
-
-    const startMicrophone = async () => {
-        audioContextRef.current = new AudioContext();
-        await audioContextRef.current.audioWorklet.addModule(
-            DOWNSAMPLING_WORKER
-        );
-        const success = (stream: MediaStream) => {
-            console.log("started recording");
-            mediaStreamRef.current = stream;
-            const sourceNode =
-                audioContextRef.current?.createMediaStreamSource(stream);
-            if (sourceNode && audioContextRef.current) {
-                mediaStreamSourceRef.current = sourceNode;
-                processorRef.current = new AudioWorkletNode(
-                    audioContextRef.current,
-                    "downsampling-processor"
-                );
-                processorRef.current.port.onmessage = (event) => {
-                    // Handle the downsampled audio data
-                    const downsampledData = event.data;
-                    if (socketRef.current?.connected) {
-                        socketRef.current.emit("stream-data", downsampledData);
-                    }
-                    if (recording) {
-                        chunksRef.current.push(downsampledData);
-                    }
-                };
-                mediaStreamSourceRef.current?.connect(processorRef.current);
-                processorRef.current.connect(
-                    audioContextRef.current.destination
-                );
-            }
-        };
-
-        const fail = (e: Error) => {
-            console.error("recording failure", e);
-        };
-
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices
-                .getUserMedia({
-                    video: false,
-                    audio: true,
-                })
-                .then(success)
-                .catch(fail);
-        } else {
-            (navigator as any).getUserMedia(
-                {
-                    video: false,
-                    audio: true,
-                },
-                success,
-                fail
+        const sampleRateRatio = inputSampleRate / outputSampleRate;
+        const newLength = Math.round(buffer.length / sampleRateRatio);
+        const result = new Float32Array(newLength);
+        let offsetResult = 0;
+        let offsetBuffer = 0;
+        while (offsetResult < result.length) {
+            const nextOffsetBuffer = Math.round(
+                (offsetResult + 1) * sampleRateRatio
             );
+            let accum = 0,
+                count = 0;
+            for (
+                let i = offsetBuffer;
+                i < nextOffsetBuffer && i < buffer.length;
+                i++
+            ) {
+                accum += buffer[i];
+                count++;
+            }
+            result[offsetResult] = accum / count;
+            offsetResult++;
+            offsetBuffer = nextOffsetBuffer;
         }
+        return result;
     };
-    const stopRecording = () => {
-        if (recording) {
-            processorRef.current?.disconnect();
-            mediaStreamSourceRef.current?.disconnect();
-            mediaStreamRef.current
-                ?.getTracks()
-                .forEach((track) => track.stop());
-            audioContextRef.current?.close();
 
-            const blob = new Blob(chunksRef.current, { type: "audio/wav" });
-            sendAudioData(blob);
-        }
-    };
+    useEffect(() => {
+        socketRef.current = io("http://localhost:8000/");
+        socketRef.current.on("connect", () => {
+            console.log("Connected to server");
+        });
+        socketRef.current.on("disconnect", () => {
+            console.log("Disconnected from server");
+        });
+        return () => {
+            socketRef.current?.disconnect();
+        };
+    }, []);
 
     const divs = useSelector((state: any) => state.divs);
 
