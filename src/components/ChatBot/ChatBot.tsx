@@ -20,11 +20,6 @@ const ChatBot = (): JSX.Element => {
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const chunksRef = useRef<Float32Array[]>([]);
     const audioContextRef = useRef<AudioContext | null>(null);
-    const scriptProcessorRef = useRef<ScriptProcessorNode | null>(null);
-
-    const bufferSize = 2048;
-    const sampleRate = 16000;
-    const numChannels = 1;
 
     const startRecording = async () => {
         try {
@@ -33,24 +28,16 @@ const ChatBot = (): JSX.Element => {
                 audio: true,
             });
             audioContextRef.current = new AudioContext();
-            scriptProcessorRef.current =
-                audioContextRef.current.createScriptProcessor(
-                    bufferSize,
-                    numChannels,
-                    numChannels
-                );
+            await audioContextRef.current.audioWorklet.addModule(
+                "downsample-processor.js"
+            );
+            const workletNode = new AudioWorkletNode(
+                audioContextRef.current,
+                "downsample-processor"
+            );
 
-            scriptProcessorRef.current.onaudioprocess = (
-                audioProcessingEvent
-            ) => {
-                const inputBuffer = audioProcessingEvent.inputBuffer;
-                const inputData = inputBuffer.getChannelData(0);
-
-                const downsampledData = downsampleBuffer(
-                    inputData,
-                    inputBuffer.sampleRate,
-                    sampleRate
-                );
+            workletNode.port.onmessage = (event) => {
+                const downsampledData = event.data;
                 if (socketRef.current?.connected) {
                     socketRef.current.emit("stream-data", downsampledData);
                 }
@@ -62,10 +49,8 @@ const ChatBot = (): JSX.Element => {
             const sourceNode = audioContextRef.current.createMediaStreamSource(
                 mediaStreamRef.current
             );
-            sourceNode.connect(scriptProcessorRef.current);
-            scriptProcessorRef.current.connect(
-                audioContextRef.current.destination
-            );
+            sourceNode.connect(workletNode);
+            workletNode.connect(audioContextRef.current.destination);
             setRecording(true);
         } catch (error) {
             console.error("Error starting recording:", error);
@@ -74,7 +59,6 @@ const ChatBot = (): JSX.Element => {
 
     const stopRecording = () => {
         if (!recording) return;
-        scriptProcessorRef.current?.disconnect();
         mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
         audioContextRef.current?.close();
         const blob = new Blob(chunksRef.current, { type: "audio/wav" });
@@ -98,40 +82,6 @@ const ChatBot = (): JSX.Element => {
         } catch (e) {
             console.error("Error sending audio data:", e);
         }
-    };
-
-    const downsampleBuffer = (
-        buffer: Float32Array,
-        inputSampleRate: number,
-        outputSampleRate: number
-    ) => {
-        if (inputSampleRate === outputSampleRate) {
-            return buffer;
-        }
-        const sampleRateRatio = inputSampleRate / outputSampleRate;
-        const newLength = Math.round(buffer.length / sampleRateRatio);
-        const result = new Float32Array(newLength);
-        let offsetResult = 0;
-        let offsetBuffer = 0;
-        while (offsetResult < result.length) {
-            const nextOffsetBuffer = Math.round(
-                (offsetResult + 1) * sampleRateRatio
-            );
-            let accum = 0,
-                count = 0;
-            for (
-                let i = offsetBuffer;
-                i < nextOffsetBuffer && i < buffer.length;
-                i++
-            ) {
-                accum += buffer[i];
-                count++;
-            }
-            result[offsetResult] = accum / count;
-            offsetResult++;
-            offsetBuffer = nextOffsetBuffer;
-        }
-        return result;
     };
 
     useEffect(() => {
