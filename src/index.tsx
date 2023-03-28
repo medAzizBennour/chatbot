@@ -1,20 +1,18 @@
-import ChatBot from "./components/ChatBot/ChatBot";
-
 import { ThemeProvider } from "@liquify/theme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import chatReducer from "./store/reducers";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import { config } from "dotenv";
 import { resolve } from "path";
+import { Provider } from "react-redux";
 import { compose, createStore } from "redux";
 
 import "./index.css";
 import { logPerformance } from "./logPerformance";
+import ChatBot from "./components/ChatBot/ChatBot";
 
 config({ path: resolve(__dirname, ".env") });
 
@@ -25,11 +23,11 @@ const store = createStore(chatReducer, composeEnhancers());
 logPerformance("blotter-detail-render-started");
 
 ReactDOM.render(
-    <ThemeProvider>
-        <Provider store={store}>
+    <Provider store={store}>
+        <ThemeProvider>
             <ChatBot />
-        </Provider>
-    </ThemeProvider>,
+        </ThemeProvider>
+    </Provider>,
 
     document.getElementById("root")
 );
