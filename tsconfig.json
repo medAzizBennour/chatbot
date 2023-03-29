@@ -17,5 +17,5 @@
         "noImplicitAny": true,
         "noFallthroughCasesInSwitch": true
     },
-    "include": ["src"]
+    "include": ["src", "public/downsample-processor.js"]
 }

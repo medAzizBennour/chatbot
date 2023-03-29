@@ -28,9 +28,15 @@ const ChatBot = (): JSX.Element => {
                 audio: true,
             });
             audioContextRef.current = new AudioContext();
-            await audioContextRef.current.audioWorklet.addModule(
-                "downsample-processor.js"
-            );
+
+            // Register the audio worklet module and check if it is loaded successfully
+            await audioContextRef.current.audioWorklet
+                .addModule("downsample-processor.js")
+
+                .catch((error) => {
+                    console.error("Error loading DownsampleProcessor:", error);
+                });
+
             const workletNode = new AudioWorkletNode(
                 audioContextRef.current,
                 "downsample-processor"
@@ -38,8 +44,10 @@ const ChatBot = (): JSX.Element => {
 
             workletNode.port.onmessage = (event) => {
                 const downsampledData = event.data;
+                console.log("test");
                 if (socketRef.current?.connected) {
                     socketRef.current.emit("stream-data", downsampledData);
+                    console.log("Sent Audio");
                 }
                 if (recording) {
                     chunksRef.current.push(downsampledData);
@@ -62,26 +70,16 @@ const ChatBot = (): JSX.Element => {
         mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
         audioContextRef.current?.close();
         const blob = new Blob(chunksRef.current, { type: "audio/wav" });
-        sendAudioData(blob);
+        console.log(blob);
+        const fileReader = new FileReader();
+        fileReader.onload = () => {
+            const arrayBuffer = fileReader.result;
+            console.log(arrayBuffer);
+            socketRef.current?.emit("stream-data", arrayBuffer);
+            console.log("Audio sent successfully");
+        };
+        fileReader.readAsArrayBuffer(blob);
         setRecording(false);
-    };
-
-    const sendAudioData = async (blob: Blob) => {
-        const formData = new FormData();
-        formData.append("audio", blob, "recording.wav");
-        try {
-            const response = await fetch("/upload-audio", {
-                method: "POST",
-                body: formData,
-            });
-            if (response.ok) {
-                console.log("Audio data sent successfully!");
-            } else {
-                console.error("Failed to send audio data.");
-            }
-        } catch (e) {
-            console.error("Error sending audio data:", e);
-        }
     };
 
     useEffect(() => {
@@ -91,6 +89,9 @@ const ChatBot = (): JSX.Element => {
         });
         socketRef.current.on("disconnect", () => {
             console.log("Disconnected from server");
+        });
+        socketRef.current.on("transcription_result", (result) => {
+            console.log("Transcription result:", result);
         });
         return () => {
             socketRef.current?.disconnect();

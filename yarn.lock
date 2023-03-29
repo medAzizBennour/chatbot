@@ -6292,6 +6292,14 @@ atob@^2.1.2:
   resolved "https://ln1ampart01.ad.linedata.com:443/api/npm/npm-release/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha1-bZUX654DDSQ2ZmZR6GvZ9vE1M8k=
 
+automation-events@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/automation-events/-/automation-events-5.0.2.tgz#c792ce2b1e43481019153f37dcb0d18c68642425"
+  integrity sha512-8mfgjeI22tlKeaGY8y0bDt93IIUJhQKR/ISTsnhhFkpAzCirPdQ/Rmfp3xakCTmIihLgDuIWcWygHWozYKVGyQ==
+  dependencies:
+    "@babel/runtime" "^7.21.0"
+    tslib "^2.5.0"
+
 autoprefixer@^9.6.1:
   version "9.8.8"
   resolved "https://ln1ampart01.ad.linedata.com:443/api/npm/npm-release/autoprefixer/-/autoprefixer-9.8.8.tgz#fd4bd4595385fa6f06599de749a4d5f7a474957a"
@@ -15093,6 +15101,11 @@ react-transition-group@^4.4.0, react-transition-group@^4.4.2, react-transition-g
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-use-websocket@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/react-use-websocket/-/react-use-websocket-4.3.1.tgz#13cd2fd2e0fb90010482ab2858f8ae81f2ce85c2"
+  integrity sha512-zHPLWrgcqydJaak2O5V9hiz4q2dwkwqNQqpgFVmSuPxLZdsZlnDs8DVHy3WtHH+A6ms/8aHIyX7+7ulOcrnR0Q==
+
 react@17.0.2:
   version "17.0.2"
   resolved "https://ln1ampart01.ad.linedata.com:443/api/npm/npm-release/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
@@ -16214,6 +16227,15 @@ staged-git-files@1.1.2:
   version "1.1.2"
   resolved "https://ln1ampart01.ad.linedata.com:443/api/npm/npm-release/staged-git-files/-/staged-git-files-1.1.2.tgz#4326d33886dc9ecfa29a6193bf511ba90a46454b"
   integrity sha1-QybTOIbcns+immGTv1EbqQpGRUs=
+
+standardized-audio-context@^25.3.41:
+  version "25.3.41"
+  resolved "https://registry.yarnpkg.com/standardized-audio-context/-/standardized-audio-context-25.3.41.tgz#42689e0653698bba13705e220b78fe1f9cf458da"
+  integrity sha512-NCKY1kLCGN37dnCCIG4NX1LHWRgONvIU6u6GS3nzhMM9CV/M+GR48uIeojjeJBSICfWXfQ+t2N1MTdsgJz3wlA==
+  dependencies:
+    "@babel/runtime" "^7.21.0"
+    automation-events "^5.0.2"
+    tslib "^2.5.0"
 
 static-extend@^0.1.1:
   version "0.1.2"
