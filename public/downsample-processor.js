@@ -26,6 +26,7 @@ class DownsampleProcessor extends AudioWorkletProcessor {
         const result = new Float32Array(newLength);
         let offsetResult = 0;
         let offsetBuffer = 0;
+        console.log("Inside Downsample-Processor");
         while (offsetResult < result.length) {
             const nextOffsetBuffer = Math.round(
                 (offsetResult + 1) * sampleRateRatio

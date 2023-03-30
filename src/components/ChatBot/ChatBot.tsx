@@ -29,13 +29,9 @@ const ChatBot = (): JSX.Element => {
             });
             audioContextRef.current = new AudioContext();
 
-            // Register the audio worklet module and check if it is loaded successfully
-            await audioContextRef.current.audioWorklet
-                .addModule("downsample-processor.js")
-
-                .catch((error) => {
-                    console.error("Error loading DownsampleProcessor:", error);
-                });
+            await audioContextRef.current.audioWorklet.addModule(
+                "./downsample-processor.js"
+            );
 
             const workletNode = new AudioWorkletNode(
                 audioContextRef.current,
@@ -44,7 +40,6 @@ const ChatBot = (): JSX.Element => {
 
             workletNode.port.onmessage = (event) => {
                 const downsampledData = event.data;
-                console.log("test");
                 if (socketRef.current?.connected) {
                     socketRef.current.emit("stream-data", downsampledData);
                     console.log("Sent Audio");
@@ -64,7 +59,6 @@ const ChatBot = (): JSX.Element => {
             console.error("Error starting recording:", error);
         }
     };
-
     const stopRecording = () => {
         if (!recording) return;
         mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
@@ -79,6 +73,7 @@ const ChatBot = (): JSX.Element => {
             console.log("Audio sent successfully");
         };
         fileReader.readAsArrayBuffer(blob);
+        chunksRef.current = [];
         setRecording(false);
     };
 
