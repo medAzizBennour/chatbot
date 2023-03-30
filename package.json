@@ -19,6 +19,7 @@
         "@liquify/theme": "^1.0.5",
         "@mui/icons-material": "^5.11.11",
         "@mui/material": "^5.9.2",
+        "@types/dom-mediacapture-record": "^1.0.15",
         "@types/websocket": "^1.0.5",
         "ag-grid-community": "26.1.0",
         "ag-grid-react": "26.1.0",
