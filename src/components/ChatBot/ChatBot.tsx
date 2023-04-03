@@ -13,143 +13,47 @@ import img from "../../assets/images/chatbot.png";
 import io, { Socket } from "socket.io-client";
 import { addBotCommand, addUserCommand } from "../../store/actions";
 
+import RecordRTC from "recordrtc";
+
 const ChatBot = (): JSX.Element => {
     const [recording, setRecording] = useState(false);
     const [chatOpen, setChatOpen] = useState(false);
     const socketRef = useRef<Socket | null>(null);
-    // const mediaStreamRef = useRef<MediaStream | null>(null);
-    // const audioContextRef = useRef<AudioContext | null>(null);
-    // const recorderRef = useRef<MediaRecorder | null>(null);
-
-    // const startRecording = async () => {
-    //     try {
-    //         mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
-    //             video: false,
-    //             audio: true,
-    //         });
-    //         console.log("Media stream obtained:", mediaStreamRef.current);
-    //         recorderRef.current = new MediaRecorder(mediaStreamRef.current);
-    //         console.log("Recorder created:", recorderRef.current);
-    //         audioContextRef.current = new AudioContext();
-    //         console.log("Audio context created:", audioContextRef.current);
-
-    //         await audioContextRef.current.audioWorklet.addModule(
-    //             "./downsample-processor.js"
-    //         );
-    //         console.log("Audio worklet added");
-
-    //         const workletNode = new AudioWorkletNode(
-    //             audioContextRef.current,
-    //             "downsample-processor"
-    //         );
-    //         console.log("Worklet node created:", workletNode);
-
-    //         workletNode.port.onmessage = (event) => {
-    //             console.log("WorkletNode dekhel");
-    //             const downsampledData = event.data;
-    //             if (socketRef.current?.connected) {
-    //                 socketRef.current.emit("stream-data", downsampledData);
-    //                 console.log("Audio data sent to server");
-    //             }
-    //         };
-
-    //         const sourceNode = audioContextRef.current.createMediaStreamSource(
-    //             mediaStreamRef.current
-    //         );
-    //         console.log("Source node created:", sourceNode);
-    //         sourceNode.connect(workletNode);
-    //         workletNode.connect(audioContextRef.current.destination);
-    //         recorderRef.current.start();
-    //         setRecording(true);
-    //     } catch (error) {
-    //         console.error("Error starting recording:", error);
-    //     }
-    // };
-
-    // const stopRecording = () => {
-    //     if (!recording) return;
-    //     recorderRef.current?.stop();
-    //     console.log("Media Stream when end: ", mediaStreamRef.current);
-    //     mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
-    //     audioContextRef.current?.close();
-    //     setRecording(false);
-    // };
-
-    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-    const recordedChunksRef = useRef<Blob[]>([]);
-    if (
-        navigator.mediaDevices &&
-        typeof navigator.mediaDevices.getUserMedia === "function" &&
-        typeof MediaRecorder === "function" &&
-        MediaRecorder.isTypeSupported("audio/mpeg")
-    ) {
-        console.log("MediaRecorder is supported!");
-    } else {
-        console.log("MediaRecorder is not supported!");
-    }
+    const recorderRef = useRef<RecordRTC | null>(null);
 
     const startRecording = async () => {
         try {
-            const mediaStream = await navigator.mediaDevices.getUserMedia({
-                video: false,
+            const stream = await navigator.mediaDevices.getUserMedia({
                 audio: true,
             });
-            mediaRecorderRef.current = new MediaRecorder(mediaStream, {
+            recorderRef.current = new RecordRTC(stream, {
+                type: "audio",
                 mimeType: "audio/wav",
             });
-            mediaRecorderRef.current.ondataavailable = (event) => {
-                recordedChunksRef.current.push(event.data);
-            };
-            mediaRecorderRef.current.onstop = () => {
-                const recordedBlob = new Blob(recordedChunksRef.current, {
-                    type: "audio/wav",
-                });
-                const fileReader = new FileReader();
-                fileReader.onload = () => {
-                    const buffer = fileReader.result as ArrayBuffer;
-                    socketRef.current?.emit("audio-file", buffer);
-                };
-                fileReader.readAsArrayBuffer(recordedBlob);
-                recordedChunksRef.current = [];
-            };
-            mediaRecorderRef.current.start();
+            recorderRef.current?.startRecording();
             setRecording(true);
         } catch (error) {
             console.error("Error starting recording:", error);
         }
     };
 
-    const stopRecording = () => {
-        if (!recording) return;
-        mediaRecorderRef.current?.stop();
-        setRecording(false);
-    };
-
-    const downsample = (
-        input: Float32Array,
-        inputSampleRate: number,
-        outputSampleRate: number
-    ): Float32Array => {
-        const ratio = inputSampleRate / outputSampleRate;
-        const outputLength = Math.round(input.length / ratio);
-        const output = new Float32Array(outputLength);
-
-        let inputIndex = 0;
-        let outputIndex = 0;
-        while (outputIndex < outputLength) {
-            const nextOutputTime = (outputIndex + 1) * ratio;
-            let accum = 0;
-            let count = 0;
-            while (inputIndex < nextOutputTime && inputIndex < input.length) {
-                accum += input[inputIndex];
-                count++;
-                inputIndex++;
-            }
-            output[outputIndex] = accum / count;
-            outputIndex++;
+    const stopRecording = async () => {
+        try {
+            recorderRef.current?.stopRecording(() => {
+                const blob = recorderRef.current?.getBlob();
+                if (blob) {
+                    const fileReader = new FileReader();
+                    fileReader.readAsArrayBuffer(blob);
+                    fileReader.onloadend = () => {
+                        const buffer = fileReader.result as ArrayBuffer;
+                        socketRef.current?.emit("audio-file", buffer);
+                    };
+                }
+            });
+            setRecording(false);
+        } catch (error) {
+            console.error("Error stopping recording:", error);
         }
-
-        return output;
     };
 
     useEffect(() => {
@@ -162,6 +66,11 @@ const ChatBot = (): JSX.Element => {
         });
         socketRef.current.on("transcription_result", (result) => {
             console.log("Transcription result:", result);
+            const transcribed_text = result["transcribed_text"];
+            setCommand(transcribed_text);
+            dispatch(addUserCommand(`${transcribed_text}`));
+            executeCommand(transcribed_text);
+            setCommand("");
         });
 
         return () => {
