@@ -33,24 +33,25 @@ def handle_transcribe(data):
     command = result['text']
     prompt = f"{command}->"
 
-    # response = openai.Completion.create(
-    #     model=model,
-    #     prompt=prompt,
-    #     temperature=1,
-    #     max_tokens=256,
-    #     top_p=1,
-    #     frequency_penalty=0,
-    #     presence_penalty=1
-    # )
-    # js = response['choices'][0]['text'].strip().split('\n', 1)[0].replace("\'", "\"")
-    # print(js)
-    # js_obj = json.dumps(js, ensure_ascii=False)
-    # response_data = ast.literal_eval(js_obj)
+    response = openai.Completion.create(
+        model=model,
+        prompt=prompt,
+        temperature=1,
+        max_tokens=256,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=1
+    )
+    js=response['choices'][0]['text'].strip().split('\n',1)[0]
+    print(js)
+    data = ast.literal_eval(js)
+    json_string = json.dumps(data)
+    print(json_string)
+    json_object = {"transcribed_text":result['text']}
+    json_object.update(data)
+    socketio.emit('transcription_result', json_object)
 
-    emit_data = {"transcribed_text": result['text']
-                #  , "response": response_data
-                 }
-    socketio.emit('transcription_result', emit_data)
+   
 
 
 if __name__ == '__main__':

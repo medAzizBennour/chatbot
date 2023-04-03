@@ -69,7 +69,8 @@ const ChatBot = (): JSX.Element => {
             const transcribed_text = result["transcribed_text"];
             setCommand(transcribed_text);
             dispatch(addUserCommand(`${transcribed_text}`));
-            executeCommand(transcribed_text);
+            console.log(result["response"]["response"]);
+            dispatch(addBotCommand(`${result["response"]}`));
             setCommand("");
         });
 
