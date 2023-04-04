@@ -55,6 +55,7 @@ const ChatBot = (): JSX.Element => {
             console.error("Error stopping recording:", error);
         }
     };
+    const dispatch = useDispatch();
 
     useEffect(() => {
         socketRef.current = io("http://localhost:8000/");
@@ -66,48 +67,55 @@ const ChatBot = (): JSX.Element => {
         });
         socketRef.current.on("transcription_result", (result) => {
             console.log("Transcription result:", result);
-            const transcribed_text = result["transcribed_text"];
-            setCommand(transcribed_text);
-            dispatch(addUserCommand(`${transcribed_text}`));
-            console.log(result["response"]["response"]);
-            dispatch(addBotCommand(`${result["response"]}`));
+
+            setCommand(result);
+            dispatch(addUserCommand(`${result}`));
             setCommand("");
+        });
+
+        socketRef.current.on("response", (result) => {
+            console.log("Transcription response:", result);
+            dispatch(addBotCommand(`${result["response"]}`));
+        });
+
+        socketRef.current.on("text-response", (result) => {
+            console.log("Transcription response:", result);
+            dispatch(addBotCommand(`${result["response"]}`));
         });
 
         return () => {
             socketRef.current?.disconnect();
         };
-    }, []);
+    }, [dispatch]);
 
     const divs = useSelector((state: any) => state.divs);
 
     const memoDivs = useMemo(() => [...divs], [divs]);
-    const dispatch = useDispatch();
 
-    const commands = [
-        {
-            pattern: /(search|look) for (.+)/i,
-            command: (option: String, term: String) => {
-                window.open(`https://www.google.com/search?q=${term}`);
-            },
-        },
+    // const commands = [
+    //     {
+    //         pattern: /(search|look) for (.+)/i,
+    //         command: (option: String, term: String) => {
+    //             window.open(`https://www.google.com/search?q=${term}`);
+    //         },
+    //     },
 
-        {
-            pattern: /(go|navigate) to (.+)/i,
-            command: (option: String, website: String) =>
-                window.open(`https://${website}.com`),
-        },
-        {
-            pattern: /click on button (1|2)/i,
-            command: (option: String) => {
-                const button = document.querySelector(
-                    `button:nth-of-type(${option})`
-                ) as HTMLButtonElement;
-                console.log("button");
-                button?.click();
-            },
-        },
-    ];
+    //     {
+    //         pattern: /(go|navigate) to (.+)/i,
+    //         command: (option: String, website: String) =>
+    //             window.open(`https://${website}.com`),
+    //     },
+    //     {
+    //         pattern: /click on button (1|2)/i,
+    //         command: (option: String) => {
+    //             const button = document.querySelector(
+    //                 `button:nth-of-type(${option})`
+    //             ) as HTMLButtonElement;
+    //             console.log("button");
+    //             button?.click();
+    //         },
+    //     },
+    // ];
 
     const [command, setCommand] = useState("");
     const divsContainerRef = useRef(null);
@@ -129,25 +137,12 @@ const ChatBot = (): JSX.Element => {
         }
     };
 
-    const executeCommand = (command: String) => {
-        const matchingCommand = commands.find((cmd) =>
-            command.match(cmd.pattern)
-        );
-        if (matchingCommand) {
-            dispatch(addBotCommand(`Okay I will ${command}.`));
-            const args = command.match(matchingCommand.pattern);
-            if (args) matchingCommand.command(args[1], args[2]);
-        } else {
-            dispatch(addBotCommand(`Sorry, I didn't understand your command.`));
-        }
-    };
-
     const handleSubmit = () => {
         if (command.trim() === "") {
             return;
         } else {
             dispatch(addUserCommand(`${command}`));
-            executeCommand(command);
+            socketRef.current?.emit("text-command", command);
             setCommand("");
         }
     };
