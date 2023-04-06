@@ -68,7 +68,9 @@
         "test:dev": "react-scripts test",
         "lint": "tslint -p .",
         "fixlint": "tslint -p . --fix",
-        "clean": "shx rm -rf build && shx rm -rf node_modules"
+        "clean": "shx rm -rf build && shx rm -rf node_modules",
+        "server": "nodemon src/components/ChatBot/ChatBotBackend/LayoutManagerLink/server.ts",
+        "whisper": "python src/components/ChatBot/ChatBotBackend/WhisperTranscribe/python_backend.py"
     },
     "eslintConfig": {
         "extends": "react-app"

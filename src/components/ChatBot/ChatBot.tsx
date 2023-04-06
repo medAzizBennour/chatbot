@@ -92,31 +92,6 @@ const ChatBot = (): JSX.Element => {
 
     const memoDivs = useMemo(() => [...divs], [divs]);
 
-    // const commands = [
-    //     {
-    //         pattern: /(search|look) for (.+)/i,
-    //         command: (option: String, term: String) => {
-    //             window.open(`https://www.google.com/search?q=${term}`);
-    //         },
-    //     },
-
-    //     {
-    //         pattern: /(go|navigate) to (.+)/i,
-    //         command: (option: String, website: String) =>
-    //             window.open(`https://${website}.com`),
-    //     },
-    //     {
-    //         pattern: /click on button (1|2)/i,
-    //         command: (option: String) => {
-    //             const button = document.querySelector(
-    //                 `button:nth-of-type(${option})`
-    //             ) as HTMLButtonElement;
-    //             console.log("button");
-    //             button?.click();
-    //         },
-    //     },
-    // ];
-
     const [command, setCommand] = useState("");
     const divsContainerRef = useRef(null);
 
