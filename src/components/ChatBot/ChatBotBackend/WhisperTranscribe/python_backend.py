@@ -23,20 +23,22 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 # Create WebSocket client to connect to Node.js server
 # ws = websocket.create_connection("ws://localhost:4000")
 
-def handle_command(message):
+def handle_command (message):
     headers = {'Content-Type': 'application/json'}
     data = json.dumps({'sender': 'test', 'message': message})
 
 # send the request to the endpoint and receive the response
     response = requests.post(rasa_url, headers=headers, data=data)
+    print("Responseeeeeeeeee" ,response)
     response_json = response.json()
+    print(response_json)
     # Extracting the JSON payload from the text field
     json_payload = response_json[0]['text']
 
 # Parsing the JSON payload into a dictionary
     payload_dict = json.loads(json_payload)
     response_message = payload_dict['response']
-    socketio.emit('response-message', response_message)
+    socketio.emit('response-text', response_message)
 
 # Extracting the intent, entities, and response message
     intent = payload_dict['intent']

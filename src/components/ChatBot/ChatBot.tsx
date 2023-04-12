@@ -73,9 +73,13 @@ const ChatBot = (): JSX.Element => {
             setCommand("");
         });
 
-        socketRef.current.on("response", (result) => {
+        socketRef.current.on("response-text", (result) => {
             console.log("Transcription response:", result);
-            dispatch(addBotCommand(`${result["response"]}`));
+            dispatch(addBotCommand(`${result}`));
+        });
+
+        socketRef.current.on("response", (result) => {
+            console.log("Itent response:", result);
         });
 
         return () => {
