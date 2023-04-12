@@ -10,16 +10,20 @@ const wss = new WebSocket.Server({ port: 4000 });
 wss.on("connection", (ws: WebSocket) => {
     console.log("WebSocket client connected");
 
-    const navigateMmessage = {
-        type: "message",
-        data: { action: "navigate", parameters: { page: "Orders" } },
-    };
-    ws.send(JSON.stringify(navigateMmessage));
-    const filterMessage = {
-        type: "message",
-        data: { action: "filter", parameters: { selected: "working" } },
-    };
-    ws.send(JSON.stringify(filterMessage));
+    // const navigateMmessage = {
+    //     type: "message",
+    //     data: { action: "navigate", parameters: { page: "Orders" } },
+    // };
+    // ws.send(JSON.stringify(navigateMmessage));
+    // const filterMessage = {
+    //     type: "message",
+    //     data: { action: "filter", parameters: { selected: "working" } },
+    // };
+    // ws.send(JSON.stringify(filterMessage));
+    ws.on("message", (command) => {
+        ws.send(JSON.stringify(command));
+        console.log(command);
+    });
 });
 
 app.listen(PORT, () =>

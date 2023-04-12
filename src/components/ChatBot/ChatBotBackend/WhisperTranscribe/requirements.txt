@@ -3,9 +3,8 @@ git+https://github.com/openai/whisper.git
 pandas
 openai
 CORS
-os
-tempfile
 flask
-json
 flask_socketio
 secrets
+requests
+websocket-client

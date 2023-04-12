@@ -78,11 +78,6 @@ const ChatBot = (): JSX.Element => {
             dispatch(addBotCommand(`${result["response"]}`));
         });
 
-        socketRef.current.on("text-response", (result) => {
-            console.log("Transcription response:", result);
-            dispatch(addBotCommand(`${result["response"]}`));
-        });
-
         return () => {
             socketRef.current?.disconnect();
         };
