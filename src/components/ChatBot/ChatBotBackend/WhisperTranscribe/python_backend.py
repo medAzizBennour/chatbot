@@ -63,10 +63,12 @@ def handle_transcribe(data):
         f.write(data)
 
     result = audio_model.transcribe(save_path, fp16=False, language='english')
+    print("resuuults",result)
 
     if result['segments'][0]['no_speech_prob']<0.5:
         print(result)
         command = result['text']
+        print('commmaaand',command)
         socketio.emit('transcription_result', command)
         response_obj=handle_command(command)
 #         prompt = f"{command}->"

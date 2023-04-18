@@ -76,7 +76,8 @@
         "fixlint": "tslint -p . --fix",
         "clean": "shx rm -rf build && shx rm -rf node_modules",
         "server": "nodemon --exec ts-node --project tsconfig.commonjs.json src/components/ChatBot/ChatBotBackend/LayoutManagerLink/server.ts",
-        "whisper": "python src/components/ChatBot/ChatBotBackend/WhisperTranscribe/python_backend.py"
+        "whisper": "python src/components/ChatBot/ChatBotBackend/WhisperTranscribe/python_backend.py",
+        "rasa": "rasa run src/components/ChatBot/ChatBotBackend/rasa/actions"
     },
     "eslintConfig": {
         "extends": "react-app"

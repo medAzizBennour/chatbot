@@ -46,6 +46,7 @@ const ChatBot = (): JSX.Element => {
                     fileReader.readAsArrayBuffer(blob);
                     fileReader.onloadend = () => {
                         const buffer = fileReader.result as ArrayBuffer;
+                        console.log("Audio loaded");
                         socketRef.current?.emit("audio-file", buffer);
                     };
                 }
