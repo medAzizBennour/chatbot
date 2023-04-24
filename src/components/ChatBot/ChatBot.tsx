@@ -130,7 +130,10 @@ const ChatBot = (): JSX.Element => {
 
     const toggle = () => {
         setChatOpen(!chatOpen);
+        const panel = document.querySelector(".panel");
+        panel?.classList.toggle("open");
     };
+
     return (
         <div className="App">
             <div className="panel" style={chatOpen ? show : hide}>
@@ -156,6 +159,7 @@ const ChatBot = (): JSX.Element => {
                 <div className="input-container">
                     <div className="text-input">
                         <textarea
+                            style={{ width: "100%", resize: "none" }}
                             onKeyDown={handleOnKeyDown}
                             onSubmit={handleSubmit}
                             placeholder="Give me a command"

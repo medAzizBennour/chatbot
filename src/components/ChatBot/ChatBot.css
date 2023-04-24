@@ -62,8 +62,13 @@
     width: 100%;
     height: 90%;
     position: relative;
-    top: 2.5%;
+    bottom: -150%;
     left: 3.5%;
+    transition: bottom 6s ease-in-out;
+}
+
+.panel.open {
+    bottom: -2.5%;
 }
 
 .intro-header {
@@ -180,50 +185,6 @@
     width: 100%;
 }
 
-/* .button-wrapper {
-    position: absolute;
-    bottom: -1vh;
-    right: -0.5vw;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.toggleButton {
-    display: block;
-    border-radius: 50px;
-    border: 0px;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.toggleButton-bg {
-    position: absolute;
-    top: -5px;
-    left: -3px;
-    width: calc(100% + 6px);
-    height: calc(100% + 6px);
-    background: linear-gradient(
-        90deg,
-        rgba(10, 41, 70, 1) 0%,
-        rgba(51, 97, 139, 1) 32%,
-        rgba(23, 23, 227, 1) 59%,
-        rgba(172, 216, 228, 1) 100%
-    );
-    background-size: 500% 500%;
-    border-radius: 50px;
-    animation: AnimateBorder 4s ease infinite;
-    -webkit-animation: AnimateBorder 4s ease infinite;
-    -moz-animation: AnimateBorder 4s ease infinite;
-    z-index: -1;
-    transition: filter 1s ease-in;
-    overflow: hidden;
-} */
 .button-wrapper {
     position: relative;
     width: 60px;
@@ -251,8 +212,8 @@
         90deg,
         rgba(10, 41, 70, 1) 0%,
         rgba(51, 97, 139, 1) 32%,
-        rgba(23, 23, 227, 1) 59%,
-        rgba(172, 216, 228, 1) 100%
+        white 60%,
+        rgba(51, 97, 139, 1) 80%
     );
     background-size: 500% 500%;
     border-radius: 50px;
@@ -269,33 +230,11 @@
 }
 
 .toggleButton:checked + .button-wrapper .toggleButton-bg:before {
-    transform: translate(25px, -25px);
+    transform: translate(40px, -40px);
 }
 
 .toggleButton:checked + .button-wrapper .toggleButton-bg:after {
-    transform: translate(-25px, 25px);
-}
-
-.button-wrapper .toggleButton-bg:before,
-.button-wrapper .toggleButton-bg:after {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    transform: translate(5px, 0);
-    transition: transform 0.5s ease-in-out;
-}
-
-.button-wrapper .toggleButton-bg:before {
-    top: 22px;
-    left: 22px;
-}
-
-.button-wrapper .toggleButton-bg:after {
-    bottom: 22px;
-    right: 22px;
+    transform: translate(-40px, 40px);
 }
 
 @keyframes AnimateBorder {
