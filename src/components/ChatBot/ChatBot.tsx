@@ -5,6 +5,9 @@ import "./ChatBot.css";
 
 import MicIcon from "@mui/icons-material/Mic";
 import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
+
+import SendIcon from "@mui/icons-material/Send";
+
 import { IconButton } from "@mui/material";
 
 import logo from "../../assets/images/linedata_logo.png";
@@ -121,22 +124,28 @@ const ChatBot = (): JSX.Element => {
             setCommand("");
         }
     };
-    const hide = {
-        display: "none",
-    };
-    const show = {
-        display: "block",
-    };
 
     const toggle = () => {
-        setChatOpen(!chatOpen);
         const panel = document.querySelector(".panel");
-        panel?.classList.toggle("open");
+
+        if (chatOpen) {
+            // If chat is currently open, hide the panel
+            panel?.classList.remove("open");
+            setTimeout(() => {
+                setChatOpen(false);
+            }, 500); // Wait for the animation to finish before setting chatOpen to false
+        } else {
+            // If chat is currently closed, show the panel
+            setChatOpen(true);
+            setTimeout(() => {
+                panel?.classList.add("open");
+            }, 2); // Delay the adding of the 'open' class to allow for the animation to happen
+        }
     };
 
     return (
         <div className="App">
-            <div className="panel" style={chatOpen ? show : hide}>
+            <div className="panel">
                 <div className="header">
                     <img alt="logo" src={logo} className="logo" />
 
@@ -159,7 +168,13 @@ const ChatBot = (): JSX.Element => {
                 <div className="input-container">
                     <div className="text-input">
                         <textarea
-                            style={{ width: "100%", resize: "none" }}
+                            style={{
+                                width: "100%",
+                                resize: "none",
+                                height: "90%",
+                                paddingLeft: "5px",
+                                paddingTop: "10px",
+                            }}
                             onKeyDown={handleOnKeyDown}
                             onSubmit={handleSubmit}
                             placeholder="Give me a command"
@@ -169,7 +184,7 @@ const ChatBot = (): JSX.Element => {
                             value={command}
                         />
                     </div>
-                    <div>
+                    <div className="icon-buttons">
                         {!recording ? (
                             <IconButton
                                 onClick={startRecording}
@@ -195,6 +210,17 @@ const ChatBot = (): JSX.Element => {
                                 }
                             />
                         )}
+                        <IconButton
+                            onClick={handleSubmit}
+                            children={
+                                <SendIcon
+                                    sx={{
+                                        color: "rgb(7, 63, 115) ",
+                                        fontSize: "24px",
+                                    }}
+                                />
+                            }
+                        />
                     </div>
                 </div>
             </div>
