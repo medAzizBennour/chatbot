@@ -11,14 +11,15 @@
     color: rgba(28, 35, 44, 0.8);
     width: fit-content;
     text-align: left;
-    line-height: 20px;
-    border-radius: 15px 15px 15px 5px;
+    line-height: 25px;
+    border-radius: 20px;
     padding: 10px 20px;
-    background-color: rgb(237, 240, 247);
+    background-color: #f2f2f2;
     box-sizing: border-box;
     display: inline-block;
     white-space: pre-wrap;
     word-break: break-word;
+    border: 1px solid #ddd;
 }
 
 .user-command {
@@ -30,13 +31,14 @@
     color: #fff;
     width: fit-content;
     text-align: right;
-    line-height: 20px;
-    border-radius: 15px 15px 15px 5px;
+    line-height: 25px;
+    border-radius: 20px;
     padding: 10px 20px;
-    background-color: rgb(7, 63, 115);
+    background-color: #0a2946;
     box-sizing: border-box;
     white-space: pre-wrap;
     word-break: break-word;
+    border: 1px solid #0a2946;
 }
 
 .App {
@@ -46,24 +48,27 @@
     width: 50%;
     height: 95%;
     position: fixed;
-    bottom: 5%;
     right: 2%;
 }
+
 .panel {
     display: flex;
     flex-direction: column;
-    box-shadow: 5px 5px rgb(7 63 115 / 10%);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
     color: #fff;
-    background-color: rgba(255, 255, 255, 0.808);
-    border: 3px solid rgb(7, 63, 115);
-    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
     width: 100%;
     height: 90%;
+    position: relative;
+    top: 2.5%;
+    left: 3.5%;
 }
 
 .intro-header {
     font-size: 10px;
-    opacity: 0.6;
+    opacity: 0.7;
     margin: 1px 2px 1px 0px;
 }
 
@@ -73,7 +78,7 @@
 
 .iconButton {
     color: #fff;
-    width: 5vw;
+    width: 8vw;
 }
 
 .logo {
@@ -88,17 +93,19 @@
     justify-content: center;
     display: flex;
     flex-direction: row;
-    background: linear-gradient(
-        180deg,
-        rgb(7, 63, 115) 0%,
-        rgb(10, 41, 70) 86.7%
-    );
+    background: linear-gradient(180deg, #0a2946 0%, #0f4c75 50%, #3282b8 100%);
+}
+.header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .header-text {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    color: white;
 }
 
 .input-container {
@@ -106,37 +113,48 @@
     flex-direction: row;
     align-items: center;
     position: absolute;
-    bottom: 10%;
+    bottom: 0%;
     right: 0;
     justify-content: flex-end;
     width: 100%;
-    background-color: transparent;
-
-    border-top: 3px solid rgb(7, 63, 115);
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
-
-    padding: 3px;
+    padding: 10px;
 }
+
 .text-input {
     color: black;
     font-size: 14px;
     font-weight: 500;
     width: 100%;
-    box-shadow: inset;
+    box-shadow: none;
     border-radius: 5px;
-    margin: 2px;
-    background-color: rgb(234, 240, 246);
+    margin: 0 10px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    padding: 8px;
 }
 
-textarea:focus {
+.text-input:focus {
     outline: none;
+    border-color: #007bff;
 }
-.text-input textarea {
-    background-color: inherit;
+
+.textarea-input {
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
     width: 100%;
-    border-radius: inherit;
-    padding: 5px;
+    box-shadow: none;
+    border-radius: 5px;
+    margin: 0 10px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    padding: 8px;
+    resize: none;
+}
+
+.textarea-input:focus {
+    outline: none;
+    border-color: #007bff;
 }
 
 .divs-container {
@@ -144,25 +162,33 @@ textarea:focus {
     flex-direction: column;
     max-height: 72.5%;
     overflow-y: auto;
+    padding: 10px;
 }
 
 .pop {
     width: 8%;
     height: 8%;
     cursor: pointer;
-    bottom: 5%;
-    right: 1%;
+    bottom: 2%;
+    right: -1%;
     position: fixed;
+    z-index: 999;
 }
 
 .pop img {
     border-radius: 50%;
-
     width: 100%;
 }
 
-.button-wrapper {
-    position: relative;
+/* .button-wrapper {
+    position: absolute;
+    bottom: -1vh;
+    right: -0.5vw;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .toggleButton {
@@ -171,6 +197,48 @@ textarea:focus {
     border: 0px;
     cursor: pointer;
     width: 100%;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.toggleButton-bg {
+    position: absolute;
+    top: -5px;
+    left: -3px;
+    width: calc(100% + 6px);
+    height: calc(100% + 6px);
+    background: linear-gradient(
+        90deg,
+        rgba(10, 41, 70, 1) 0%,
+        rgba(51, 97, 139, 1) 32%,
+        rgba(23, 23, 227, 1) 59%,
+        rgba(172, 216, 228, 1) 100%
+    );
+    background-size: 500% 500%;
+    border-radius: 50px;
+    animation: AnimateBorder 4s ease infinite;
+    -webkit-animation: AnimateBorder 4s ease infinite;
+    -moz-animation: AnimateBorder 4s ease infinite;
+    z-index: -1;
+    transition: filter 1s ease-in;
+    overflow: hidden;
+} */
+.button-wrapper {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    left: 22%;
+    top: 22%;
+}
+
+.toggleButton {
+    display: block;
+    border-radius: 50px;
+    border: 0px;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
 }
 
 .toggleButton-bg {
@@ -194,6 +262,78 @@ textarea:focus {
     z-index: -1;
     transform: translate(-3px, -3px);
     transition: filter 1s ease-in;
+}
+
+.toggleButton:checked + .button-wrapper .toggleButton-bg {
+    filter: brightness(0.9);
+}
+
+.toggleButton:checked + .button-wrapper .toggleButton-bg:before {
+    transform: translate(25px, -25px);
+}
+
+.toggleButton:checked + .button-wrapper .toggleButton-bg:after {
+    transform: translate(-25px, 25px);
+}
+
+.button-wrapper .toggleButton-bg:before,
+.button-wrapper .toggleButton-bg:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transform: translate(5px, 0);
+    transition: transform 0.5s ease-in-out;
+}
+
+.button-wrapper .toggleButton-bg:before {
+    top: 22px;
+    left: 22px;
+}
+
+.button-wrapper .toggleButton-bg:after {
+    bottom: 22px;
+    right: 22px;
+}
+
+@keyframes AnimateBorder {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .pop {
+        width: 12%;
+        height: 12%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .pop {
+        width: 20%;
+        height: 20%;
+    }
+}
+
+@media only screen and (max-height: 500px) {
+    .pop {
+        display: none;
+    }
+}
+
+@media only screen and (max-height: 400px) {
+    .input-container {
+        display: none;
+    }
 }
 
 body {
