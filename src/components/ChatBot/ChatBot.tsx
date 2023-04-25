@@ -153,13 +153,16 @@ const ChatBot = (): JSX.Element => {
         <div className="App">
             <div className="panel">
                 <div className="header">
-                    <img alt="logo" src={logo} className="logo" />
+                    <div></div>
+                    <div className="header-logo">
+                        {" "}
+                        <img alt="logo" src={logo} className="logo" />
+                    </div>
 
-                    <div className="header-text">
-                        <h4 className="mt-2">Linedata Voice Assistant</h4>
-                        <p className="intro-header ">
-                            You're chatting with Linedata Bot
-                        </p>
+                    <div className="header-text" style={{ marginLeft: "8px" }}>
+                        <h4 className="mt-2" style={{ fontSize: "18px" }}>
+                            Linedata Voice Assistant
+                        </h4>
                     </div>
                 </div>
 
