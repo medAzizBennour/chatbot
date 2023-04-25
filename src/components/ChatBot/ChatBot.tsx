@@ -23,8 +23,11 @@ const ChatBot = (): JSX.Element => {
     const [chatOpen, setChatOpen] = useState(false);
     const socketRef = useRef<Socket | null>(null);
     const recorderRef = useRef<RecordRTC | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [voiceLoading, setVoiceLoading] = useState(false);
 
     const startRecording = async () => {
+        setVoiceLoading(true);
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 audio: true,
@@ -71,6 +74,7 @@ const ChatBot = (): JSX.Element => {
         });
         socketRef.current.on("transcription_result", (result) => {
             console.log("Transcription result:", result);
+            setVoiceLoading(false);
 
             setCommand(result);
             dispatch(addUserCommand(`${result}`));
@@ -79,6 +83,7 @@ const ChatBot = (): JSX.Element => {
 
         socketRef.current.on("response-text", (result) => {
             console.log("Transcription response:", result);
+            setLoading(false);
             dispatch(addBotCommand(`${result}`));
         });
 
@@ -121,6 +126,7 @@ const ChatBot = (): JSX.Element => {
         } else {
             dispatch(addUserCommand(`${command}`));
             socketRef.current?.emit("text-command", command);
+            setLoading(true);
             setCommand("");
         }
     };
@@ -163,10 +169,82 @@ const ChatBot = (): JSX.Element => {
                             <h4>{memoDiv.text}</h4>
                         </div>
                     ))}
+                    {loading && <div className="bot-command">...</div>}
                 </div>
 
                 <div className="input-container">
                     <div className="text-input">
+                        {/* {voiceLoading && ( }
+                            //     <div className="loader" title="loading...">
+                            //         <svg
+                            //             version="1.1"
+                            //             id="Layer_1"
+                            //             xmlns="http://www.w3.org/2000/svg"
+                            //             xmlnsXlink="http://www.w3.org/1999/xlink"
+                            //             x="0px"
+                            //             y="0px"
+                            //             width="20px"
+                            //             height="20px"
+                            //             viewBox="0 0 20 20"
+                            //             style={{
+                            //                 enableBackground: "new 0 0 50 50",
+                            //             }}
+                            //             xmlSpace="preserve"
+                            //         >
+                            //             <rect
+                            //                 x="0"
+                            //                 y="0"
+                            //                 width="4"
+                            //                 height="20"
+                            //                 fill={color}
+                            //             >
+                            //                 <animate
+                            //                     attributeName="opacity"
+                            //                     attributeType="XML"
+                            //                     values="1; .2; 1"
+                            //                     begin="0s"
+                            //                     dur="0.6s"
+                            //                     repeatCount="indefinite"
+                            //                 />
+                            //             </rect>
+                            //             <rect
+                            //                 x="7"
+                            //                 y="0"
+                            //                 width="4"
+                            //                 height="20"
+                            //                 fill={color}
+                            //             >
+                            //                 <animate
+                            //                     attributeName="opacity"
+                            //                     attributeType="XML"
+                            //                     values="1; .2; 1"
+                            //                     begin="0.2s"
+                            //                     dur="0.6s"
+                            //                     repeatCount="indefinite"
+                            //                 />
+                            //             </rect>
+                            //             <rect
+                            //                 x="14"
+                            //                 y="0"
+                            //                 width="4"
+                            //                 height="20"
+                            //                 fill={color}
+                            //             >
+                            //                 <animate
+                            //                     attributeName="opacity"
+                            //                     attributeType="XML"
+                            //                     values="1; .2; 1"
+                            //                     begin="0.4s"
+                            //                     dur="0.6s"
+                            //                     repeatCount="indefinite"
+                            //                 />
+                            //             </rect>
+                            //         </svg>
+                            //     </div>
+                            // )}
+                        //     <div>...</div>
+                        // )}
+                        {/* {!voiceLoading && ( */}
                         <textarea
                             style={{
                                 width: "100%",
@@ -183,6 +261,7 @@ const ChatBot = (): JSX.Element => {
                             }}
                             value={command}
                         />
+                        {/* )} */}
                     </div>
                     <div className="icon-buttons">
                         {!recording ? (
