@@ -58,6 +58,7 @@ const ChatBot = (): JSX.Element => {
                 }
             });
             setRecording(false);
+            setLoading(true);
         } catch (error) {
             console.error("Error stopping recording:", error);
         }
@@ -65,7 +66,9 @@ const ChatBot = (): JSX.Element => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        socketRef.current = io("http://localhost:8000/");
+        socketRef.current = io("http://localhost:8000/", {
+            query: { namespace: "chatbot" },
+        });
         socketRef.current.on("connect", () => {
             console.log("Connected to server");
         });
@@ -86,9 +89,8 @@ const ChatBot = (): JSX.Element => {
             setLoading(false);
             dispatch(addBotCommand(`${result}`));
         });
-
-        socketRef.current.on("response", (result) => {
-            console.log("Itent response:", result);
+        socketRef.current.on("disconnect", () => {
+            socketRef?.current?.emit("disconnect");
         });
 
         return () => {

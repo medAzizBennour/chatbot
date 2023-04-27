@@ -21,6 +21,8 @@ __pycache__
 nuget.exe
 *.md5sum
 
+site-packages
+
 # misc
 .DS_Store
 .env.local
