@@ -28,7 +28,7 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 intents=["greet","goodbye","buy_stock","sell_stock","search","filter","navigate","stock_price"]
 
-def handle_command(message):
+def handle_command(message,namespace):
     headers = {'Content-Type': 'application/json'}
     data = json.dumps({'sender': 'test', 'message': message})
 # send the request to the endpoint and receive the response
@@ -40,13 +40,15 @@ def handle_command(message):
     payload_dict = json.loads(json_payload)
 # Extracting the intent, entities, and response message
     intent = payload_dict['intent']
+    print("NAMESPACE",namespace)
     if intent not in intents:
-        response_message=gpt.GptMessage(message)
-        socketio.emit('response-text', response_message)
+        if namespace=='chatbot':
+            response_message=gpt.GptMessage(message)
+            socketio.emit('response-text', response_message)
     else:
-        response_message = payload_dict['response']
-        socketio.emit('response-text', response_message)
-        print(payload_dict)
+        if namespace=='chatbot':
+            response_message = payload_dict['response']
+            socketio.emit('response-text', response_message)
         if 'entities' in payload_dict:
             entities = payload_dict['entities']
             response_dict = {
@@ -144,10 +146,11 @@ def handle_command(message):
 
 @socketio.on('connect')
 def handle_connect():
-    # Generate a unique namespace for the client
-    namespace = secrets.token_hex(16)
+    # Get the namespace sent from the frontend
+    namespace = flask.request.args.get('namespace')
     client_namespaces[flask.request.sid] = namespace
     join_room(namespace)
+
 
 @socketio.on('disconnect')
 def handle_disconnect():
@@ -177,10 +180,12 @@ def handle_transcribe(data):
 @socketio.on('text-command')
 def text_command(command):
     namespace = client_namespaces.get(flask.request.sid)
+    print(namespace)
     if namespace:
-        # Emit the response to the client's specific namespace
-        response_obj = handle_command(command)
+            # Emit the response to the client's specific namespace
+        response_obj = handle_command(command,namespace)
         socketio.emit('response', response_obj, namespace=namespace)
+    
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=8000)
