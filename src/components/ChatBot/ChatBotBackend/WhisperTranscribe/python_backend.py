@@ -1,30 +1,33 @@
-import asyncio
 import json
 import os
 import secrets
 import tempfile
-import sanic
+from sanic import Sanic
 import requests
 import openai
 import whisper
-import aio_pika
 import sample_config as config
 from sanic_cors import CORS
-import socketio
+from socketio import AsyncServer
 
 openai.api_key = config.OPENAI_API_KEY
 model = "davinci:ft-personal-2023-03-29-12-07-15"
 audio_model = whisper.load_model("base")
 rasa_url=config.RASA_URL
-rabbitmq_url = config.RABBITMQ_URL
 
-app = sanic.Sanic(__name__)
+app = Sanic(__name__)
 CORS(app)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 
+app2 = Sanic('app2')
+CORS(app2)
+app2.config['SECRET_KEY'] = secrets.token_hex(16)
+
 # Create the two SocketIO instances
-transcribe_socket = socketio(app, cors_allowed_origins='*')
-command_socket = socketio(app, cors_allowed_origins='*')
+transcribe_socket = AsyncServer(async_mode='sanic', cors_allowed_origins='*')
+transcribe_socket.attach(app)
+command_socket = AsyncServer(async_mode='sanic', cors_allowed_origins='*')
+command_socket.attach(app2)
 
 async def handle_command(message, connection):
     headers = {'Content-Type': 'application/json'}
@@ -51,12 +54,6 @@ async def handle_command(message, connection):
         "type": "message",
         "data": {"action": intent, "parameters": entities}
     }
-
-    # Publish the response dict to RabbitMQ
-    await connection.default_exchange.publish(
-        aio_pika.Message(body=json.dumps(response_dict).encode('utf-8')),
-        routing_key='command'
-    )
 
     # Return the response dict
     return response_dict
@@ -94,44 +91,5 @@ async def text_command(command):
 
     
 if __name__ == '__main__':
-    # Connect to RabbitMQ
-    async def setup_rabbitmq():
-        connection = await aio_pika.connect_robust(rabbitmq_url)
-        return connection
-
-    # Bind a queue to the 'command' routing key
-    async def setup_queue():
-        channel = await rabbitmq_connection.channel()
-        queue = await channel.declare_queue('command')
-        await queue.bind('command', 'command')
-        return queue
-
-    # Define a function to handle incoming RabbitMQ messages
-    async def handle_rabbitmq_message(message):
-        # Extract the message body
-        data = json.loads(message.body.decode('utf-8'))
-
-        # Process the command
-        response = await handle_command(data['message'], rabbitmq_connection)
-
-        # Emit the response to the clients
-        await socketio.emit('response', response)
-
-        # Acknowledge receipt of the message
-        await message.ack()
-
-    # Start the Flask app with SocketIO for transcribing audio
-    transcribe_socket.run(app, host='0.0.0.0', port=8000)
-
-    # Connect to RabbitMQ and setup the queue
-    rabbitmq_connection = asyncio.run(setup_rabbitmq())
-    rabbitmq_queue = asyncio.run(setup_queue())
-
-    # Start consuming messages from the RabbitMQ queue
-    asyncio.create_task(rabbitmq_queue.consume(handle_rabbitmq_message))
-
-    # Start the SocketIO instance for handling commands
-    command_socket.run(app, host='0.0.0.0', port=8001)
-
-
-
+    app.run(host='0.0.0.0', port=8000)
+    app2.run(host='0.0.0.0', port=8001)

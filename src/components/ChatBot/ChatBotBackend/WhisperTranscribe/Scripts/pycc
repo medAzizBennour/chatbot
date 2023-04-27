@@ -1,0 +1,3 @@
+#!C:\Users\bbenltaief\Documents\Amp\VoiceAssistant\src\components\ChatBot\ChatBotBackend\WhisperTranscribe\Scripts\python.exe
+from numba.pycc import main
+main()
