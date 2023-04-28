@@ -6,14 +6,12 @@ import json
 import openai
 import whisper
 import sample_config as config
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO,join_room,leave_room
 import secrets
 import requests
 import websocket
 import gpt_backend as gpt
 
-
-client_namespaces = {}
 
 
 openai.api_key = config.OPENAI_API_KEY
@@ -28,7 +26,6 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 
 intents=["greet","goodbye","buy_stock","sell_stock","search","filter","navigate","stock_price"]
-socket_clients=["chatbot","navigate","filter","search","order"]
 
 def handle_command(message):
     headers = {'Content-Type': 'application/json'}
@@ -44,16 +41,16 @@ def handle_command(message):
     intent = payload_dict['intent']
     if intent not in intents:
         response_message=gpt.GptMessage(message)
-        socketio.emit('response-text', response_message,namespace="chatbot")
+        socketio.emit('response-text', response_message,namespace="/chatbot")
     else:
         response_message = payload_dict['response']
-        socketio.emit('response-text', response_message, namespace="chatbot")
+        socketio.emit('response-text', response_message,namespace="/chatbot")
         if 'entities' in payload_dict:
             entities = payload_dict['entities']
             response_dict = {
             "data": { "action": intent,"entities":entities }
         }
-            socketio.emit('response', response_dict,namespace=intent)
+            socketio.emit('response', response_dict,namespace='/'+intent)
 
 
         
@@ -143,20 +140,10 @@ def handle_command(message):
 #         print('commmaaand',command)
 #         socketio.emit('transcription_result', command)
 
-# @socketio.on('connect')
-# def handle_connect():
-#     # Get the namespace sent from the frontend
-#     namespace = flask.request.args.get('namespace')
-#     client_namespaces[flask.request.sid] = namespace
 
 
-# @socketio.on('disconnect')
-# def handle_disconnect():
-#     client_namespaces.pop(flask.request.sid)
-
-@socketio.on('audio-file')
+@socketio.on('audio-file',namespace="/chatbot")
 def handle_transcribe(data):
-    namespace = client_namespaces.get(flask.request.sid)
     temp_dir = tempfile.mkdtemp()
     save_path = os.path.join(temp_dir, 'temp.wav')
     with open(save_path, 'wb') as f:
@@ -169,11 +156,11 @@ def handle_transcribe(data):
     result=openai.Audio.transcribe("whisper-1", audio_file)
     print("resuuults",result.text)
     command=result['text']
-    socketio.emit('transcription_result', command,namespace="chatbot")
+    socketio.emit('transcription_result', command,namespace="/chatbot")
     handle_command(command)
 
 
-@socketio.on('text-command')
+@socketio.on('text-command',namespace="/chatbot")
 def text_command(command):
     handle_command(command)
     

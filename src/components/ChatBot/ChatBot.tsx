@@ -66,9 +66,7 @@ const ChatBot = (): JSX.Element => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        socketRef.current = io("http://localhost:8000/", {
-            query: { namespace: "chatbot" },
-        });
+        socketRef.current = io("http://localhost:8000/chatbot");
         socketRef.current.on("connect", () => {
             console.log("Connected to server");
         });
