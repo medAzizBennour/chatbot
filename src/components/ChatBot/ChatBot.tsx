@@ -68,7 +68,7 @@ const ChatBot = (): JSX.Element => {
     useEffect(() => {
         socketRef.current = io("http://localhost:8000/chatbot");
         socketRef.current.on("connect", () => {
-            console.log("Connected to server");
+            console.log("Chatbot Connected to server");
         });
         socketRef.current.on("disconnect", () => {
             console.log("Disconnected from server");

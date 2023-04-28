@@ -50,78 +50,9 @@ def handle_command(message):
             response_dict = {
             "data": { "action": intent,"entities":entities }
         }
-            socketio.emit('response', response_dict,namespace='/'+intent)
-
-
-        
-# # def handle_command (message):
-# #     headers = {'Content-Type': 'application/json'}
-# #     data = json.dumps({'sender': 'test', 'message': message})
-
-# # # send the request to the endpoint and receive the response
-# #     response = requests.post(rasa_url, headers=headers, data=data)
-# #     print("Responseeeeeeeeee" ,response)
-# #     response_json = response.json()
-# #     print(response_json)
-# #     # Extracting the JSON payload from the text field
-# #     json_payload = response_json[0]['text']
-
-# # # Parsing the JSON payload into a dictionary
-# #     payload_dict = json.loads(json_payload)
-# #     response_message = payload_dict['response']
-# #     socketio.emit('response-text', response_message)
-
-# # # Extracting the intent, entities, and response message
-# #     intent = payload_dict['intent']
-# #     entities = payload_dict['entities']
-
-
-#     print(response_json)
-
-#     response_dict = {
-#         "type":"message",
-#         "data": { "action": intent, "parameters": entities }
-#     }
-
-#     # Return the JSON as a response
-#     return response_dict
-
-
-# def handle_command(message):
-#     headers = {'Content-Type': 'application/json'}
-#     data = json.dumps({'sender': 'test', 'message': message})
-
-# # send the request to the endpoint and receive the response
-#     response = requests.post(rasa_url, headers=headers, data=data)
-#     response_json = response.json()
-#     # Extracting the JSON payload from the text field
-#     json_payload = response_json[0]['text']
-
-# # Parsing the JSON payload into a dictionary
-#     payload_dict = json.loads(json_payload)
-#     print(payload_dict)
-
-# # Extracting the intent, entities, and response message
-#     intent = payload_dict['intent']
-#     response = payload_dict['response']
-#     print('Intent',intent)
-#     print('Resoponse ',response)
-#     if intent not in intents:
-#         response_message=gpt.GptMessage(message)
-#         socketio.emit('response-text', response_message)
-#     else:
-#         if (payload_dict.entities):
-#             entities = payload_dict['entities']
-#         response_message = payload_dict['response']
-
-#         #emit response message to the chatbot
-#         socketio.emit('response-text', response_message)
-
-#         response_dict = {
-#         "data": { "action": intent, "parameters": entities }
-        
-#     }
-#         return response_dict  
+            namespace='/'+intent
+            print(response_dict)
+            socketio.emit('response', response_dict,namespace=namespace)
 
 
 # @socketio.on('audio-file')
@@ -141,6 +72,31 @@ def handle_command(message):
 #         socketio.emit('transcription_result', command)
 
 
+@socketio.on('connect',namespace="/navigate")
+def handle_connect():
+    print("Navigate Connected")
+
+
+@socketio.on('disconnect',namespace="/navigate")
+def handle_disconnect():
+    print("alo")
+
+@socketio.on('connect',namespace="/filter")
+def handle_connect():
+    print("Filter Connected")
+
+
+@socketio.on('disconnect',namespace="/filter")
+def handle_disconnect():
+    print("alo")
+@socketio.on('connect',namespace="/search")
+def handle_connect():
+    print("Search Connected")
+
+
+@socketio.on('disconnect',namespace="/search")
+def handle_disconnect():
+    print("alo")
 
 @socketio.on('audio-file',namespace="/chatbot")
 def handle_transcribe(data):
