@@ -30,7 +30,7 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 intents=["greet","goodbye","buy_stock","sell_stock","search","filter","navigate","stock_price"]
 socket_clients=["chatbot","navigate","filter","search","order"]
 
-def handle_command(message,namespace):
+def handle_command(message):
     headers = {'Content-Type': 'application/json'}
     data = json.dumps({'sender': 'test', 'message': message})
 # send the request to the endpoint and receive the response
@@ -42,20 +42,18 @@ def handle_command(message,namespace):
     payload_dict = json.loads(json_payload)
 # Extracting the intent, entities, and response message
     intent = payload_dict['intent']
-    if namespace in socket_clients and namespace in client_namespaces:
-        if intent not in intents:
-            response_message=gpt.GptMessage(message)
-            socketio.emit('response-text', response_message,namespace="chatbot")
-        elif namespace=="chatbot":
-            response_message = payload_dict['response']
-            socketio.emit('response-text', response_message, namespace="chatbot")
-        else:
-            if 'entities' in payload_dict:
-                entities = payload_dict['entities']
-                response_dict = {
-                "data": { "action": intent,"entities":entities }
-            }
-                socketio.emit('response', response_dict,namespace=intent)
+    if intent not in intents:
+        response_message=gpt.GptMessage(message)
+        socketio.emit('response-text', response_message,namespace="chatbot")
+    else:
+        response_message = payload_dict['response']
+        socketio.emit('response-text', response_message, namespace="chatbot")
+        if 'entities' in payload_dict:
+            entities = payload_dict['entities']
+            response_dict = {
+            "data": { "action": intent,"entities":entities }
+        }
+            socketio.emit('response', response_dict,namespace=intent)
 
 
         
@@ -145,16 +143,16 @@ def handle_command(message,namespace):
 #         print('commmaaand',command)
 #         socketio.emit('transcription_result', command)
 
-@socketio.on('connect')
-def handle_connect():
-    # Get the namespace sent from the frontend
-    namespace = flask.request.args.get('namespace')
-    client_namespaces[flask.request.sid] = namespace
+# @socketio.on('connect')
+# def handle_connect():
+#     # Get the namespace sent from the frontend
+#     namespace = flask.request.args.get('namespace')
+#     client_namespaces[flask.request.sid] = namespace
 
 
-@socketio.on('disconnect')
-def handle_disconnect():
-    client_namespaces.pop(flask.request.sid)
+# @socketio.on('disconnect')
+# def handle_disconnect():
+#     client_namespaces.pop(flask.request.sid)
 
 @socketio.on('audio-file')
 def handle_transcribe(data):
@@ -177,11 +175,7 @@ def handle_transcribe(data):
 
 @socketio.on('text-command')
 def text_command(command):
-    namespace = client_namespaces.get(flask.request.sid)
-    print(namespace)
-    if namespace=="chatbot":
-        # Emit the response to the client's specific namespace
-        handle_command(command,namespace)
+    handle_command(command)
     
 
 if __name__ == '__main__':
