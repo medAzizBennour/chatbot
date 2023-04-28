@@ -6,7 +6,7 @@ import json
 import openai
 import whisper
 import sample_config as config
-from flask_socketio import SocketIO,join_room,leave_room
+from flask_socketio import SocketIO
 import secrets
 import requests
 import websocket
@@ -26,7 +26,9 @@ CORS(app)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 socketio = SocketIO(app, cors_allowed_origins='*')
 
+
 intents=["greet","goodbye","buy_stock","sell_stock","search","filter","navigate","stock_price"]
+socket_clients=["chatbot","navigate","filter","search","order"]
 
 def handle_command(message,namespace):
     headers = {'Content-Type': 'application/json'}
@@ -40,23 +42,22 @@ def handle_command(message,namespace):
     payload_dict = json.loads(json_payload)
 # Extracting the intent, entities, and response message
     intent = payload_dict['intent']
-    print("NAMESPACE",namespace)
-    if intent not in intents:
-        if namespace=='chatbot':
+    if namespace in socket_clients and namespace in client_namespaces:
+        if intent not in intents:
             response_message=gpt.GptMessage(message)
-            socketio.emit('response-text', response_message)
-    else:
-        if namespace=='chatbot':
+            socketio.emit('response-text', response_message,namespace="chatbot")
+        elif namespace=="chatbot":
             response_message = payload_dict['response']
-            socketio.emit('response-text', response_message)
-        if 'entities' in payload_dict:
-            entities = payload_dict['entities']
-            response_dict = {
+            socketio.emit('response-text', response_message, namespace="chatbot")
+        else:
+            if 'entities' in payload_dict:
+                entities = payload_dict['entities']
+                response_dict = {
                 "data": { "action": intent,"entities":entities }
             }
-            return response_dict
-        else:
-            return {}
+                socketio.emit('response', response_dict,namespace=intent)
+
+
         
 # # def handle_command (message):
 # #     headers = {'Content-Type': 'application/json'}
@@ -149,17 +150,15 @@ def handle_connect():
     # Get the namespace sent from the frontend
     namespace = flask.request.args.get('namespace')
     client_namespaces[flask.request.sid] = namespace
-    join_room(namespace)
 
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    namespace = client_namespaces.pop(flask.request.sid)
-    leave_room(namespace)
-
+    client_namespaces.pop(flask.request.sid)
 
 @socketio.on('audio-file')
 def handle_transcribe(data):
+    namespace = client_namespaces.get(flask.request.sid)
     temp_dir = tempfile.mkdtemp()
     save_path = os.path.join(temp_dir, 'temp.wav')
     with open(save_path, 'wb') as f:
@@ -172,19 +171,17 @@ def handle_transcribe(data):
     result=openai.Audio.transcribe("whisper-1", audio_file)
     print("resuuults",result.text)
     command=result['text']
-    socketio.emit('transcription_result', command)
-    response_obj=handle_command(command)
+    socketio.emit('transcription_result', command,namespace="chatbot")
+    handle_command(command)
 
-    socketio.emit('response', response_obj)
 
 @socketio.on('text-command')
 def text_command(command):
     namespace = client_namespaces.get(flask.request.sid)
     print(namespace)
-    if namespace:
-            # Emit the response to the client's specific namespace
-        response_obj = handle_command(command,namespace)
-        socketio.emit('response', response_obj, namespace=namespace)
+    if namespace=="chatbot":
+        # Emit the response to the client's specific namespace
+        handle_command(command,namespace)
     
 
 if __name__ == '__main__':
