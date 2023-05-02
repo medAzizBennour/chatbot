@@ -5329,6 +5329,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-mic@^12.4.3":
+  version "12.4.3"
+  resolved "https://registry.yarnpkg.com/@types/react-mic/-/react-mic-12.4.3.tgz#d6e0f318a7ff930c57060b988fcd8e541d713be5"
+  integrity sha512-PCp+Phe0WcFRPhDQjOfiONz2OJSef+ds+8g7vN/xqRntcfGKPCyr4ZaiICaNJ+8uZcoUaw7F1E15AEUOjRW4IQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^7.1.20":
   version "7.1.25"
   resolved "https://ln1ampart01.ad.linedata.com:443/api/npm/npm-release/@types/react-redux/-/react-redux-7.1.25.tgz#de841631205b24f9dfb4967dd4a7901e048f9a88"
@@ -14792,7 +14799,7 @@ prop-types-extra@^1.1.0:
     react-is "^16.3.2"
     warning "^4.0.0"
 
-prop-types@>=15.6.0, prop-types@^15.6.2, prop-types@^15.7.0, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@>=15.6.0, prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.7.0, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://ln1ampart01.ad.linedata.com:443/api/npm/npm-release/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha1-Z9h78aaU9IQ1zzMsJK8QIUoxQLU=
@@ -15114,6 +15121,11 @@ react-error-overlay@^6.0.9:
   resolved "https://ln1ampart01.ad.linedata.com:443/api/npm/npm-release/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
   integrity sha1-koNd5YQcXPCLoA3dLWd7bRf/mts=
 
+react-ga@^2.2.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.7.0.tgz#24328f157f31e8cffbf4de74a3396536679d8d7c"
+  integrity sha512-AjC7UOZMvygrWTc2hKxTDvlMXEtbmA0IgJjmkhgmQQ3RkXrWR11xEagLGFGaNyaPnmg24oaIiaNPnEoftUhfXA==
+
 react-generate-context@1.0.1:
   version "1.0.1"
   resolved "https://ln1ampart01.ad.linedata.com:443/api/npm/npm-release/react-generate-context/-/react-generate-context-1.0.1.tgz#4454cfecb0b3f27502185dfa5c63d5f5ec14b936"
@@ -15150,6 +15162,14 @@ react-map-gl@7.0.15:
   integrity sha1-3tCMz/SQEgmamUW2wu9/Jm373kk=
   dependencies:
     "@types/mapbox-gl" "^2.6.0"
+
+react-mic@^12.4.6:
+  version "12.4.6"
+  resolved "https://registry.yarnpkg.com/react-mic/-/react-mic-12.4.6.tgz#e66ca4e1074ebfd26f6972f26ba2d99d85fd3bc2"
+  integrity sha512-2/DZoz7thR2nJyekF10zBvs/7a8HhUQ4L8MV6BpC+Q/T8G1MvpRHGSHjSlVtnbzaCMDJ3R1MdThoLu15WuVh/g==
+  dependencies:
+    prop-types "^15.5.10"
+    react-ga "^2.2.0"
 
 react-native-get-random-values@^1.4.0:
   version "1.8.0"

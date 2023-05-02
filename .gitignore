@@ -21,6 +21,8 @@ __pycache__
 nuget.exe
 *.md5sum
 
+models/
+
 site-packages
 
 # misc

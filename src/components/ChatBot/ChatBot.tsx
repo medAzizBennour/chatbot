@@ -15,6 +15,7 @@ import img from "../../assets/images/chatbot.png";
 
 import io, { Socket } from "socket.io-client";
 import { addBotCommand, addUserCommand } from "../../store/actions";
+import { ReactMic } from "react-mic";
 
 import RecordRTC from "recordrtc";
 
@@ -59,6 +60,7 @@ const ChatBot = (): JSX.Element => {
             });
             setRecording(false);
             setLoading(true);
+            setVoiceLoading(false);
         } catch (error) {
             console.error("Error stopping recording:", error);
         }
@@ -75,7 +77,6 @@ const ChatBot = (): JSX.Element => {
         });
         socketRef.current.on("transcription_result", (result) => {
             console.log("Transcription result:", result);
-            setVoiceLoading(false);
 
             setCommand(result);
             dispatch(addUserCommand(`${result}`));
@@ -177,94 +178,34 @@ const ChatBot = (): JSX.Element => {
 
                 <div className="input-container">
                     <div className="text-input">
-                        {/* {voiceLoading && ( }
-                            //     <div className="loader" title="loading...">
-                            //         <svg
-                            //             version="1.1"
-                            //             id="Layer_1"
-                            //             xmlns="http://www.w3.org/2000/svg"
-                            //             xmlnsXlink="http://www.w3.org/1999/xlink"
-                            //             x="0px"
-                            //             y="0px"
-                            //             width="20px"
-                            //             height="20px"
-                            //             viewBox="0 0 20 20"
-                            //             style={{
-                            //                 enableBackground: "new 0 0 50 50",
-                            //             }}
-                            //             xmlSpace="preserve"
-                            //         >
-                            //             <rect
-                            //                 x="0"
-                            //                 y="0"
-                            //                 width="4"
-                            //                 height="20"
-                            //                 fill={color}
-                            //             >
-                            //                 <animate
-                            //                     attributeName="opacity"
-                            //                     attributeType="XML"
-                            //                     values="1; .2; 1"
-                            //                     begin="0s"
-                            //                     dur="0.6s"
-                            //                     repeatCount="indefinite"
-                            //                 />
-                            //             </rect>
-                            //             <rect
-                            //                 x="7"
-                            //                 y="0"
-                            //                 width="4"
-                            //                 height="20"
-                            //                 fill={color}
-                            //             >
-                            //                 <animate
-                            //                     attributeName="opacity"
-                            //                     attributeType="XML"
-                            //                     values="1; .2; 1"
-                            //                     begin="0.2s"
-                            //                     dur="0.6s"
-                            //                     repeatCount="indefinite"
-                            //                 />
-                            //             </rect>
-                            //             <rect
-                            //                 x="14"
-                            //                 y="0"
-                            //                 width="4"
-                            //                 height="20"
-                            //                 fill={color}
-                            //             >
-                            //                 <animate
-                            //                     attributeName="opacity"
-                            //                     attributeType="XML"
-                            //                     values="1; .2; 1"
-                            //                     begin="0.4s"
-                            //                     dur="0.6s"
-                            //                     repeatCount="indefinite"
-                            //                 />
-                            //             </rect>
-                            //         </svg>
-                            //     </div>
-                            // )}
-                        //     <div>...</div>
-                        // )}
-                        {/* {!voiceLoading && ( */}
-                        <textarea
-                            style={{
-                                width: "100%",
-                                resize: "none",
-                                height: "90%",
-                                paddingLeft: "5px",
-                                paddingTop: "10px",
-                            }}
-                            onKeyDown={handleOnKeyDown}
-                            onSubmit={handleSubmit}
-                            placeholder="Give me a command"
-                            onChange={(e) => {
-                                setCommand(e.target.value);
-                            }}
-                            value={command}
-                        />
-                        {/* )} */}
+                        {voiceLoading ? (
+                            <div className="sound-wave">
+                                {" "}
+                                <ReactMic
+                                    className="react-mic"
+                                    record={recording}
+                                    strokeColor="#0d6efd"
+                                    backgroundColor="white"
+                                />
+                            </div>
+                        ) : (
+                            <textarea
+                                style={{
+                                    width: "100%",
+                                    resize: "none",
+                                    height: "90%",
+                                    paddingLeft: "5px",
+                                    paddingTop: "10px",
+                                }}
+                                onKeyDown={handleOnKeyDown}
+                                onSubmit={handleSubmit}
+                                placeholder="Give me a command"
+                                onChange={(e) => {
+                                    setCommand(e.target.value);
+                                }}
+                                value={command}
+                            />
+                        )}
                     </div>
                     <div className="icon-buttons">
                         {!recording ? (
@@ -317,6 +258,7 @@ const ChatBot = (): JSX.Element => {
                     </button>
                     <div className="toggleButton-bg"></div>
                 </div>
+
                 {/* <p onClick={toggle}><img onClick={toggle} src={img} alt="click her" /></p> */}
             </div>
         </div>
