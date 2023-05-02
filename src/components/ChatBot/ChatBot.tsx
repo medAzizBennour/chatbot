@@ -176,20 +176,32 @@ const ChatBot = (): JSX.Element => {
                             <h4>{memoDiv.text}</h4>
                         </div>
                     ))}
-                    <div className="voice-loader">
-                        <Bars
+                    {/* <div className="voice-loader"> */}
+                    {transcriptionLoading && (
+                        <div className="user-command">
+                            {/* <Bars
                             height="30"
                             width="30"
                             color="rgb(7, 63, 115)"
                             visible={transcriptionLoading}
-                        />
-                    </div>
+                        /> */}
+                            <Bars
+                                height="25"
+                                width="25"
+                                color="white"
+                                visible={transcriptionLoading}
+                            />
+                        </div>
+                    )}
 
-                    <div className="comment-wrapper">
+                    <div
+                        className="comment-wrapper"
+                        style={{ transform: "scaleX(-1)" }}
+                    >
                         <Comment
                             visible={loading}
-                            height="35"
-                            width="35"
+                            height="40"
+                            width="40"
                             color="rgba(28, 35, 44, 0.8)"
                         />
                     </div>
