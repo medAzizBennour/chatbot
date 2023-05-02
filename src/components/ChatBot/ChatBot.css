@@ -48,6 +48,24 @@
     border: 1px solid rgb(7, 63, 115);
 }
 
+.comment-wrapper {
+    align-self: flex-start;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    width: fit-content;
+    text-align: left;
+    box-sizing: border-box;
+}
+.voice-loader {
+    align-self: flex-end;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    width: fit-content;
+    text-align: right;
+    box-sizing: border-box;
+}
+
 .App {
     display: flex;
     flex-direction: column;
@@ -158,6 +176,11 @@
     align-items: center;
     justify-content: center;
     height: 90%;
+}
+
+.comment-wrapper path {
+    margin-left: 5px;
+    fill: #ddd;
 }
 
 .react-mic {

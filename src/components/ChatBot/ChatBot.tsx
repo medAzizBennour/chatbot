@@ -18,7 +18,7 @@ import { addBotCommand, addUserCommand } from "../../store/actions";
 import { ReactMic } from "react-mic";
 
 import RecordRTC from "recordrtc";
-
+import { Comment, Bars } from "react-loader-spinner";
 const ChatBot = (): JSX.Element => {
     const [recording, setRecording] = useState(false);
     const [chatOpen, setChatOpen] = useState(false);
@@ -26,6 +26,7 @@ const ChatBot = (): JSX.Element => {
     const recorderRef = useRef<RecordRTC | null>(null);
     const [loading, setLoading] = useState(false);
     const [voiceLoading, setVoiceLoading] = useState(false);
+    const [transcriptionLoading, setTranscriptionLoading] = useState(false);
 
     const startRecording = async () => {
         try {
@@ -59,8 +60,8 @@ const ChatBot = (): JSX.Element => {
                 }
             });
             setRecording(false);
-            setLoading(true);
             setVoiceLoading(false);
+            setTranscriptionLoading(true);
         } catch (error) {
             console.error("Error stopping recording:", error);
         }
@@ -77,9 +78,11 @@ const ChatBot = (): JSX.Element => {
         });
         socketRef.current.on("transcription_result", (result) => {
             console.log("Transcription result:", result);
+            setTranscriptionLoading(false);
 
             setCommand(result);
             dispatch(addUserCommand(`${result}`));
+            setLoading(true);
             setCommand("");
         });
 
@@ -173,7 +176,23 @@ const ChatBot = (): JSX.Element => {
                             <h4>{memoDiv.text}</h4>
                         </div>
                     ))}
-                    {loading && <div className="bot-command">...</div>}
+                    <div className="voice-loader">
+                        <Bars
+                            height="30"
+                            width="30"
+                            color="rgb(7, 63, 115)"
+                            visible={transcriptionLoading}
+                        />
+                    </div>
+
+                    <div className="comment-wrapper">
+                        <Comment
+                            visible={loading}
+                            height="35"
+                            width="35"
+                            color="rgba(28, 35, 44, 0.8)"
+                        />
+                    </div>
                 </div>
 
                 <div className="input-container">

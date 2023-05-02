@@ -54,6 +54,7 @@
         "react-content-loader": "^5.1.4",
         "react-dom": "17.0.2",
         "react-icons": "^4.4.0",
+        "react-loader-spinner": "^5.3.4",
         "react-mic": "^12.4.6",
         "react-redux": "^7.2.6",
         "react-scripts": "4.0.3",
