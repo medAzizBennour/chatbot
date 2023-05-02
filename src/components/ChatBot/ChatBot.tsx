@@ -28,11 +28,11 @@ const ChatBot = (): JSX.Element => {
     const [voiceLoading, setVoiceLoading] = useState(false);
 
     const startRecording = async () => {
-        setVoiceLoading(true);
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 audio: true,
             });
+            setVoiceLoading(true);
             recorderRef.current = new RecordRTC(stream, {
                 type: "audio",
                 mimeType: "audio/wav",
