@@ -16,6 +16,7 @@ import img from "../../assets/images/chatbot.png";
 import io, { Socket } from "socket.io-client";
 import { addBotCommand, addUserCommand } from "../../store/actions";
 import { ReactMic } from "react-mic";
+import HelpIcon from "@mui/icons-material/Help";
 
 import RecordRTC from "recordrtc";
 import { Comment, Bars } from "react-loader-spinner";
@@ -68,6 +69,9 @@ const ChatBot = (): JSX.Element => {
     };
     const dispatch = useDispatch();
 
+    const handleHelperClick = () => {
+        console.log("Helper");
+    };
     useEffect(() => {
         socketRef.current = io("http://localhost:8000/chatbot");
         socketRef.current.on("connect", () => {
@@ -163,11 +167,24 @@ const ChatBot = (): JSX.Element => {
                         <img alt="logo" src={logo} className="logo" />
                     </div>
 
-                    <div className="header-text" style={{ marginLeft: "8px" }}>
-                        <h4 className="mt-2" style={{ fontSize: "18px" }}>
+                    <div className="header-text">
+                        <h4
+                            className="mt-2"
+                            style={{
+                                fontFamily: "Roboto",
+                                fontSize: "19px",
+                                wordSpacing: "1px",
+                                letterSpacing: "0.2px",
+                            }}
+                        >
                             Linedata Voice Assistant
                         </h4>
                     </div>
+                    <button onClick={handleHelperClick} className="header-icon">
+                        <HelpIcon
+                            style={{ fontSize: "20px", color: "white" }}
+                        />
+                    </button>
                 </div>
 
                 <div className="divs-container" ref={divsContainerRef}>
