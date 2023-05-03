@@ -28,6 +28,7 @@ const ChatBot = (): JSX.Element => {
     const [loading, setLoading] = useState(false);
     const [voiceLoading, setVoiceLoading] = useState(false);
     const [transcriptionLoading, setTranscriptionLoading] = useState(false);
+    const [helperState, setHelperState] = useState(false);
 
     const startRecording = async () => {
         try {
@@ -70,7 +71,8 @@ const ChatBot = (): JSX.Element => {
     const dispatch = useDispatch();
 
     const handleHelperClick = () => {
-        console.log("Helper");
+        socketRef.current?.emit("helper", !helperState);
+        setHelperState(!helperState);
     };
     useEffect(() => {
         socketRef.current = io("http://localhost:8000/chatbot");

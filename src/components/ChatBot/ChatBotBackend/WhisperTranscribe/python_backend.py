@@ -85,6 +85,15 @@ def handle_disconnect():
 def handle_connect():
     print("Filter Connected")
 
+@socketio.on('connect',namespace="/helper")
+def handle_connect():
+    print("Helper Connected")
+
+@socketio.on('disconnect',namespace="/helper")
+def handle_disconnect():
+    print("alo")
+
+
 
 @socketio.on('disconnect',namespace="/filter")
 def handle_disconnect():
@@ -114,6 +123,11 @@ def handle_transcribe(data):
     command=result['text']
     socketio.emit('transcription_result', command,namespace="/chatbot")
     handle_command(command)
+
+@socketio.on('helper',namespace="/chatbot")
+def helper_modal(data):
+    print(data)
+    socketio.emit('helper', data,namespace="/helper")
 
 
 @socketio.on('text-command',namespace="/chatbot")
