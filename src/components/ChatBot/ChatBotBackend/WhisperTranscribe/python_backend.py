@@ -25,7 +25,7 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 
-intents=["greet","goodbye","buy_stock","sell_stock","search","filter","navigate","stock_price"]
+intents=["greet","goodbye","buy_stock","sell_stock","search","filter","navigate","stock_price","bot_challenge"]
 
 def handle_command(message):
     headers = {'Content-Type': 'application/json'}

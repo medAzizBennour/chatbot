@@ -116,7 +116,7 @@ const ChatBot = (): JSX.Element => {
         if (divsContainer) {
             divsContainer.scrollTop = divsContainer.scrollHeight;
         }
-    }, [memoDivs]);
+    }, [memoDivs, transcriptionLoading, loading]);
 
     const handleOnKeyDown = (event: {
         key: string;
@@ -196,12 +196,6 @@ const ChatBot = (): JSX.Element => {
                     {/* <div className="voice-loader"> */}
                     {transcriptionLoading && (
                         <div className="user-command">
-                            {/* <Bars
-                            height="30"
-                            width="30"
-                            color="rgb(7, 63, 115)"
-                            visible={transcriptionLoading}
-                        /> */}
                             <Bars
                                 height="25"
                                 width="25"
