@@ -79,11 +79,15 @@ def handle_connect():
 
 @socketio.on('disconnect',namespace="/navigate")
 def handle_disconnect():
-    print("alo")
+    print("Navigate disconnected")
 
 @socketio.on('connect',namespace="/filter")
 def handle_connect():
     print("Filter Connected")
+
+@socketio.on('disconnect',namespace="/filter")
+def handle_disconnect():
+        print("Filter Disconnected")
 
 @socketio.on('connect',namespace="/helper")
 def handle_connect():
@@ -91,13 +95,9 @@ def handle_connect():
 
 @socketio.on('disconnect',namespace="/helper")
 def handle_disconnect():
-    print("alo")
+    print("Helper Disconnected")
 
 
-
-@socketio.on('disconnect',namespace="/filter")
-def handle_disconnect():
-    print("alo")
 @socketio.on('connect',namespace="/search")
 def handle_connect():
     print("Search Connected")
@@ -105,7 +105,7 @@ def handle_connect():
 
 @socketio.on('disconnect',namespace="/search")
 def handle_disconnect():
-    print("alo")
+    print("Search Disconnected")
 
 @socketio.on('audio-file',namespace="/chatbot")
 def handle_transcribe(data):
