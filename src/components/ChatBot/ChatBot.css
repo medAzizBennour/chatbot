@@ -101,6 +101,9 @@
     margin: 1px 2px 1px 0px;
 }
 
+.bot-command h4 {
+    font-weight: 500;
+}
 .response {
     text-align: right;
 }
