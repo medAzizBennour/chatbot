@@ -1,0 +1,271 @@
+version: "3.1"
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+- intent: happy
+  examples: |
+    - Thank you!
+    - Thanks for your help.
+    - I appreciate it.
+    - Thanks a lot.
+    - Thank you so much.
+    - Thanks for the assistance.
+    - Thanks for your time.
+    - Thank you for your kind support.
+    - I'm grateful for your help.
+    - Many thanks.
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+    - who are you?
+    - who am i talking to?
+    - what are you?
+    - are you sure you are a bot?
+    - bot?
+    - human?
+- intent: buy_stock
+  examples: |
+    - purchase some stocks
+    - purchase me a stock please
+    - i want to purchase some shares
+    - buy me a stock
+    - i want to buy a stock
+    - buy me some shares
+    - can i buy some stocks?
+    - can you buy me some shares?
+    - i'd like to buy stocks
+    - i want to buy [tesla](stock_company) stocks
+    - buy me [nvidia](stock_company) shares
+    - i want to buy some [apple](stock_company) shares
+    - buy me [20](stock_number) shares
+    - i want to buy [100](stock_number) stocks
+    - buy me [5](stock_number) stocks
+    - buy me [50](stock_number) shares of [nvidia](stock_company)
+    - buy a stock
+    - buy me another stock
+    - purchase [10](stock_number) shares of [tesla](stock_company)
+    - i want to purchase [100](stock_number) shares
+    - buy me [100](stock_number) shares of [tesla](stock_company)
+    - buy [100](stock_number) shares of [nvidia](stock_company)
+    - buy me [10](stock_number) shares of [tesla](stock_company)
+    - i want to buy [tesla](stock_company) stock
+    - buy some shares
+- intent: inform_stock
+  examples: |
+    - [nvidia](stock_company)
+    - [google](stock_company) shares
+    - [100](stock_number) shares
+    - [20](stock_number)
+    - [10](stock_number) shares of [tesla](stock_company)
+    - [microsoft](stock_company) stocks
+    - [50](stock_number)
+    - [10](stock_number) stocks
+    - [tesla](stock_company) stock
+    - [tesla](stock_company)
+    - [10](stock_number)
+    - [10](stock_number) shares
+    - [20](stock_number) shares of [IBM](stock_company)
+    - [100](stock_number) shares of [google](stock_company)
+    - [nvidia](stock_company) stocks
+    - [100](stock_number) shares of [IBM](stock_company)
+    - [nvidia](stock_company)
+    - [20](stock_number) shares of [google](stock_company)
+- intent: navigate
+  examples: |
+    - navigate to my [potfolio](page)
+    - go to [orders](page)
+    - can you navigate to [placements](page)
+    - show me the list of [placements](page)
+    - display all the [orders](page)
+    - display my [portfolio](page)
+    - display the [dashboard](page) page
+    - navigate to the [dashboard](page)
+    - go to my [portfolio](page)
+    - show me the list of [orders](page)
+    - navigate to [placements](page)
+    - navigate to my [portfolio](page)
+    - navigate to [profile](page)
+    - go to [placements](page)
+    - navigate to [dashboard](page)
+    - navigate to [page](page)
+    - [orders](page)
+- intent: search
+  examples: |
+    - search for [articles about trading](query)
+    - Please search for [information about stop loss orders](query)
+    - Please look up [articles about the importance of diversification in investing](query)
+    - Can you find me some resources about [algorithmic trading](query)?
+    - Can you find me some resources about [candlestick chart patterns](query)?
+    - Please search for articles about [the best stocks to invest in for long-term growth ](query)
+    - Can you find me some information about [commodities trading](query)?
+    - Can you find me some resources about [technical indicators](query)?
+    - Find me [the stock symbol for Microsoft](query)
+    - Find me [the closing price of Amazon's stock on Friday](query)
+    - Find me [the historical stock prices for Coca-Cola](query)
+    - Find me [the current stock price for Tesla and Facebook](query)
+    - Find me [the stock symbol for Alphabet Inc](query).
+    - search for [the importance of trading](query)
+    - Search for [news about the cryptocurrency marketrency](query)
+    - Can you find information about [swing trading](query)?'
+    - Please search for [articles about the best stocks to invest in for long-term growth](query)
+    - search for [the meaning of trading](query)
+    - search for [new articles about the importance of diversification in investing](query)
+    - find me some [articles about the methods of trading](query)
+    - search for [videos about diversification in investing](query)
+    - find me some ressources about [portfolio management](query)
+    - search for [videos about how to trade](query)
+- intent: fallback
+  examples: |
+    - What is the capital of France?
+    - Who won the Oscar for Best Actor in 2020?
+    - How do I cook a turkey?
+    - Can you recommend a good restaurant in the area?
+    - Tell me a joke.
+    - Define equity.
+    - How do I reset my password?
+    - What's the latest news?
+    - Can you help me find a job?
+    - What are the best places to travel? 
+
+- intent: sell_stock
+  examples: |
+    - sell some stocks
+    - sell me a stock please
+    - i want to sell some shares
+    - sell me a stock
+    - i want to sell a stock
+    - sell me some shares
+    - can i sell some stocks?
+    - can you sell me some shares?
+    - i'd like to sell stocks
+    - i want to sell [tesla](stock_company) stocks
+    - sell me [nvidia](stock_company) shares
+    - i want to sell some [apple](stock_company) shares
+    - sell me [20](stock_number) shares
+    - i want to sell [100](stock_number) stocks
+    - sell me [5](stock_number) stocks
+    - sell me [50](stock_number) shares of [nvidia](stock_company)
+    - sell a stock
+    - sell me another stock
+    - sell [10](stock_number) shares of [tesla](stock_company)
+    - i want to sell [100](stock_number) shares
+    - sell me [100](stock_number) shares of [tesla](stock_company)
+    - sell [100](stock_number) shares of [nvidia](stock_company)
+    - sell me [10](stock_number) shares of [tesla](stock_company)
+    - i want to sell [tesla](stock_company) stock
+
+- intent: filter
+  examples: |
+    - Display the list of [closed](criteria) [orders](filtered_obj)
+    - filter the list of [working](criteria) [orders](filtered_obj)
+    - show me the list of [new](criteria) [orders](filtered_obj) 
+    - filter [filled](criteria) [orders](filtered_obj)
+    - show me the list of [new](criteria) [orders](filtered_obj)
+    - Display the list of [filled](criteria) [orders](filtered_obj) 
+    - filter the list of [working](criteria) [orders](filtered_obj) 
+    - Show me the list of [new](criteria) [orders](filtered_obj) 
+    - Dispaly the list of [closed](criteria) [orders](filtered_obj)
+    - Show me the list of [new](criteria) [orders](filtered_obj) 
+    - Show me the list of [working](criteria) [orders](filtered_obj)
+    - Show me the list of [filled](criteria) [placements](filtered_obj) 
+    - Show me the list of [working](criteria) [placements](filtered_obj) 
+    - Show me the list of [filled](criteria) [placements](filtered_obj) 
+    - Show me the list of [new](criteria) [placements](filtered_obj)
+    - Show me the list of [closed](criteria) [placements](filtered_obj)
+    - Show me the list of [working](criteria) [placements](filtered_obj) 
+    - Show me the list of [new](criteria) [placements](filtered_obj)
+    - Show me the list of [paused](criteria) [placements](filtered_obj) 
+    - Display the list of [working](criteria) [placements](filtered_obj) 
+    - Filter the list of [new](criteria) [placements](filtered_obj) 
+    - Display the list of [filled](criteria) [placements](filtered_obj)
+    - Show me the list of [open](criteria) [placements](filtered_obj) 
+    - Display the list of [filled](criteria) [placements](filtered_obj) 
+    - Filter the list of  [paused](criteria) [placements](filtered_obj)
+    - filter the list of [orders](filtered_obj) by [new](criteria)
+    - filter [new](criteria) [placements](filtered_obj)
+    - filter [closed](criteria) [orders](filtered_obj)
+    - filter [orders](filtered_obj) by [filled](criteria) 
+    - filter the list of [working](criteria) [orders](filtered_obj)
+    - display the list of [working](criteria) [placements](filtered_obj)
+    - filter [orders](filtered_obj)
+    - filter [placements](filtered_obj)
+    
+
+

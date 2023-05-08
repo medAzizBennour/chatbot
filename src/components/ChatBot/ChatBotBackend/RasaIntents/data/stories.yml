@@ -1,0 +1,174 @@
+version: "3.1"
+
+stories:
+
+
+- story: interactive_story_1
+  steps:
+  - intent: buy_stock
+  - action: buy_stock_form
+  - active_loop: buy_stock_form
+  - slot_was_set:
+    - requested_slot: stock_company
+  - intent: inform_stock
+    entities:
+    - stock_number: '10'
+    - stock_company: tesla
+  - slot_was_set:
+    - stock_company: tesla
+  - slot_was_set:
+    - stock_number: '10'
+  - action: buy_stock_form
+  - slot_was_set:
+    - stock_company: tesla
+  - slot_was_set:
+    - stock_number: '10'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_order_form
+  - slot_was_set:
+    - stock_company: null
+  - slot_was_set:
+    - stock_number: null
+
+
+- story: interactive_story_2
+  steps:
+  - intent: buy_stock
+  - action: buy_stock_form
+  - active_loop: buy_stock_form
+  - slot_was_set:
+    - requested_slot: stock_company
+  - intent: inform_stock
+    entities:
+    - stock_company: nvidia
+  - slot_was_set:
+    - stock_company: nvidia
+  - action: buy_stock_form
+  - slot_was_set:
+    - stock_company: nvidia
+  - slot_was_set:
+    - requested_slot: stock_number
+  - intent: inform_stock
+    entities:
+    - stock_number: '10'
+  - slot_was_set:
+    - stock_number: '10'
+  - action: buy_stock_form
+  - slot_was_set:
+    - stock_number: '10'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_order_form
+  - slot_was_set:
+    - stock_company: null
+  - slot_was_set:
+    - stock_number: null
+  - intent: buy_stock
+  - action: buy_stock_form
+  - active_loop: buy_stock_form
+  - slot_was_set:
+    - requested_slot: stock_company
+  - intent: inform_stock
+    entities:
+    - stock_number: '100'
+    - stock_company: IBM
+  - slot_was_set:
+    - stock_company: IBM
+  - slot_was_set:
+    - stock_number: '100'
+  - action: buy_stock_form
+  - slot_was_set:
+    - stock_company: null
+  - slot_was_set:
+    - stock_number: '100'
+  - slot_was_set:
+    - requested_slot: stock_company
+
+- story: interactive_story_1
+  steps:
+  - intent: inform_stock
+    entities:
+    - stock_company: tesla
+  - slot_was_set:
+    - stock_company: tesla
+  - action: action_handle_fail_inform
+
+- story: interactive_story_1
+  steps:
+  - intent: inform_stock
+    entities:
+    - stock_company: nvidia
+  - slot_was_set:
+    - stock_company: nvidia
+  - action: action_handle_fail_inform
+  - intent: inform_stock
+    entities:
+    - stock_number: '20'
+    - stock_company: google
+  - slot_was_set:
+    - stock_company: google
+  - slot_was_set:
+    - stock_number: '20'
+  - action: action_handle_fail_inform
+
+- story: interactive_story_3
+  steps:
+  - intent: sell_stock
+  - action: sell_stock_form
+  - active_loop: sell_stock_form
+  - slot_was_set:
+    - requested_slot: stock_company
+  - intent: inform_stock
+    entities:
+    - stock_company: nvidia
+  - slot_was_set:
+    - stock_company: nvidia
+  - action: sell_stock_form
+  - slot_was_set:
+    - stock_company: nvidia
+  - slot_was_set:
+    - requested_slot: stock_number
+  - intent: inform_stock
+    entities:
+    - stock_number: '10'
+  - slot_was_set:
+    - stock_number: '10'
+  - action: sell_stock_form
+  - slot_was_set:
+    - stock_number: '10'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_order_form
+  - slot_was_set:
+    - stock_company: null
+  - slot_was_set:
+    - stock_number: null
+  - intent: sell_stock
+  - action: sell_stock_form
+  - active_loop: sell_stock_form
+  - slot_was_set:
+    - requested_slot: stock_company
+  - intent: inform_stock
+    entities:
+    - stock_number: '100'
+    - stock_company: IBM
+  - slot_was_set:
+    - stock_company: IBM
+  - slot_was_set:
+    - stock_number: '100'
+  - action: sell_stock_form
+  - slot_was_set:
+    - stock_company: null
+  - slot_was_set:
+    - stock_number: '100'
+  - slot_was_set:
+    - requested_slot: stock_company
+
+
+
+
+
