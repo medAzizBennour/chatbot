@@ -1,0 +1,131 @@
+{
+  "name": "@liquify/theme",
+  "entries": [
+    {
+      "date": "Wed, 27 Oct 2021 09:45:53 GMT",
+      "tag": "@liquify/theme_v1.0.5",
+      "version": "1.0.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "Graham.Knight@ne.linedata.com",
+            "package": "@liquify/theme",
+            "comment": {
+              "title": "",
+              "value": ""
+            },
+            "commit": "55471b7f0cf06fdd709ccc53308b326a2111ebcc"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 25 Oct 2021 13:52:17 GMT",
+      "tag": "@liquify/theme_v1.0.4",
+      "version": "1.0.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "haythem.trabelsi@se.linedata.com",
+            "package": "@liquify/theme",
+            "comment": "update ts-config",
+            "commit": "d692c4cd50cf068fb21082608affb951c7ef6f47"
+          },
+          {
+            "author": "beachball",
+            "package": "@liquify/theme",
+            "comment": "Bump @liquify/utils to v1.0.3",
+            "commit": "d692c4cd50cf068fb21082608affb951c7ef6f47"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 19 Oct 2021 08:19:57 GMT",
+      "tag": "@liquify/theme_v1.0.3",
+      "version": "1.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "Graham.Knight@ne.linedata.com",
+            "package": "@liquify/theme",
+            "comment": "PTD-996 revise default font style PTD-992 revise IconLabelButton and LabelButton adds tertiary style and success style PTD-993 revise Tabs style Adds tick icon to Trading icons",
+            "commit": "a0425b2ae24cd5855d02c157b32524207463db3a"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 13 Oct 2021 10:42:47 GMT",
+      "tag": "@liquify/theme_v1.0.2",
+      "version": "1.0.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "haythem.trabelsi@se.linedata.com",
+            "package": "@liquify/theme",
+            "comment": "add stories",
+            "commit": "b8bf40d84af2eef9650d234f701ae0be3fa8754c"
+          },
+          {
+            "author": "beachball",
+            "package": "@liquify/theme",
+            "comment": "Bump @liquify/utils to v1.0.2",
+            "commit": "b8bf40d84af2eef9650d234f701ae0be3fa8754c"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Oct 2021 14:42:54 GMT",
+      "tag": "@liquify/theme_v1.0.1",
+      "version": "1.0.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "haythem.trabelsi@se.linedata.com",
+            "package": "@liquify/theme",
+            "comment": "add stories",
+            "commit": "2263df0c85ef7cbe90c47b0cc047088981b19c09"
+          },
+          {
+            "author": "beachball",
+            "package": "@liquify/theme",
+            "comment": "Bump @liquify/utils to v1.0.1",
+            "commit": "2263df0c85ef7cbe90c47b0cc047088981b19c09"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 24 Sep 2021 15:36:42 GMT",
+      "tag": "@liquify/theme_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "none": [
+          {
+            "author": "haythem.trabelsi@se.linedata.com",
+            "package": "@liquify/theme",
+            "comment": "fix source map warning",
+            "commit": "f243691d33f0e490375085c5e1ba46cd006121d8"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 22 Sep 2021 07:43:37 GMT",
+      "tag": "@liquify/theme_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "none": [
+          {
+            "author": "haythem.trabelsi@se.linedata.com",
+            "package": "@liquify/theme",
+            "comment": "[core] fix package version",
+            "commit": "e10533f87dafecef32edca8894854c6e851a2f32"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "@liquify/popup-menu",
+  "version": "1.0.3",
+  "description": "Popup Menu component",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "sideEffects": false,
+  "typings": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "default": "./dist/index.es.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://ln1git01.ad.linedata.com/Liquify/liquify.git",
+    "directory": "packages/popup-menu"
+  },
+  "scripts": {
+    "build": "tsc --declaration --emitDeclarationOnly --outDir dist/types && rollup -c",
+    "lint:fix": "eslint --fix \"{.,src/**}/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write '{.,src/**}/*.{js,jsx,ts,tsx}'",
+    "dev": "rollup -c -w",
+    "test": "jest --env=jsdom --passWithNoTests",
+    "build-watch": "rollup -c rollup.config.dev.js -w"
+  },
+  "dependencies": {
+    "@liquify/button": "^1.0.9",
+    "@liquify/utils": "^1.5.0",
+    "@material-ui/core": "^4.3.2"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.6",
+    "styled-components": ">=5.2.0"
+  },
+  "devDependencies": {
+    "react": "^17.0.1",
+    "styled-components": "^5.2.1"
+  }
+}

@@ -1,0 +1,27 @@
+export declare enum ColorPalette {
+    bat = "bat",
+    bumblebee = "bumblebee",
+    cable = "cable",
+    cat = "cat",
+    dead = "dead",
+    drax = "drax",
+    flash = "flash",
+    groot = "groot",
+    hulk = "hulk",
+    iron = "iron",
+    joker = "joker",
+    killmonger = "killmonger",
+    nova = "nova",
+    panther = "panther",
+    phantom = "phantom",
+    punisher = "punisher",
+    robin = "robin",
+    shadow = "shadow",
+    silverswan = "silverswan",
+    super = "super",
+    strange = "strange",
+    storm = "storm",
+    thor = "thor",
+    wonder = "wonder"
+}
+export declare const hexToRgbaString: (hexColor: string, alpha: number) => string;

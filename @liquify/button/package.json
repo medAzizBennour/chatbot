@@ -1,0 +1,44 @@
+{
+  "name": "@liquify/button",
+  "version": "1.0.9",
+  "description": "Lisuify button component",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "sideEffects": false,
+  "typings": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "default": "./dist/index.es.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://ln1git01.ad.linedata.com/Liquify/liquify.git",
+    "directory": "packages/button"
+  },
+  "scripts": {
+    "build": "tsc --declaration --emitDeclarationOnly --outDir dist/types && rollup -c",
+    "lint:fix": "eslint --fix \"{.,src/**}/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write '{.,src/**}/*.{js,jsx,ts,tsx}'",
+    "dev": "rollup -c -w",
+    "test": "jest --env=jsdom --passWithNoTests",
+    "build-watch": "rollup -c rollup.config.dev.js -w"
+  },
+  "dependencies": {
+    "@liquify/theme": "^1.2.11",
+    "@liquify/utils": "^1.5.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.6",
+    "styled-components": ">=5.2.0"
+  },
+  "devDependencies": {
+    "react": "^17.0.1",
+    "styled-components": "^5.2.1"
+  }
+}

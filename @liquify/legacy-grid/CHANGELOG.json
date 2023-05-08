@@ -1,0 +1,50 @@
+{
+  "name": "@liquify/legacy-grid",
+  "entries": [
+    {
+      "date": "Tue, 28 Sep 2021 16:31:04 GMT",
+      "tag": "@liquify/legacy-grid_v1.0.2",
+      "version": "1.0.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "haythem.trabelsi@se.linedata.com",
+            "package": "@liquify/legacy-grid",
+            "comment": "[legacy-gid] inject grid css",
+            "commit": "8db1f0fc484a2be3e2bd22e61061b16b36a61c7b"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 24 Sep 2021 15:36:42 GMT",
+      "tag": "@liquify/legacy-grid_v1.0.1",
+      "version": "1.0.1",
+      "comments": {
+        "none": [
+          {
+            "author": "haythem.trabelsi@se.linedata.com",
+            "package": "@liquify/legacy-grid",
+            "comment": "fix sourcemap warning",
+            "commit": "f243691d33f0e490375085c5e1ba46cd006121d8"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 22 Sep 2021 07:43:37 GMT",
+      "tag": "@liquify/legacy-grid_v1.0.1",
+      "version": "1.0.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "haythem.trabelsi@se.linedata.com",
+            "package": "@liquify/legacy-grid",
+            "comment": "[core] fix package version",
+            "commit": "e10533f87dafecef32edca8894854c6e851a2f32"
+          }
+        ]
+      }
+    }
+  ]
+}

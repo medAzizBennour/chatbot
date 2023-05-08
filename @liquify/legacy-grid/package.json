@@ -1,0 +1,51 @@
+{
+  "name": "@liquify/legacy-grid",
+  "version": "1.0.2",
+  "description": "Liquify UI legacy grid",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "typings": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "default": "./dist/index.es.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://ln1git01.ad.linedata.com/Liquify/liquify.git",
+    "directory": "packages/legacy-grid"
+  },
+  "scripts": {
+    "build": "tsc --declaration --emitDeclarationOnly --outDir dist/types && rollup -c",
+    "lint:fix": "eslint --fix \"{.,src/**}/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write '{.,src/**}/*.{js,jsx,ts,tsx}'",
+    "dev": "rollup -c -w",
+    "test": "jest --maxWorkers=4",
+    "build-watch": "rollup -c rollup.config.dev.js -w"
+  },
+  "peerDependencies": {
+    "ag-grid-community": "^21.2.1",
+    "ag-grid-react": "^21.2.1",
+    "react": ">=16.8.6",
+    "react-dom": ">=16.8.6",
+    "styled-components": ">=5.2.0"
+  },
+  "dependencies": {
+    "@liquify/theme": "^1.0.0",
+    "@liquify/utils": "^1.0.0"
+  },
+  "devDependencies": {
+    "ag-grid-community": "^21.2.1",
+    "ag-grid-react": "^21.2.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "rollup-plugin-sizes": "^1.0.4",
+    "rollup-plugin-visualizer": "^5.5.2",
+    "styled-components": "^5.2.1"
+  }
+}
