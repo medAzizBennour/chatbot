@@ -21,7 +21,7 @@ __pycache__
 nuget.exe
 *.md5sum
 
-src/components/ChatBot/ChatBotBackend/RasaIntents/models
+src/components/ChatBot/ChatBotBackend/RasaIntent/models/
 site-packages
 
 # misc
