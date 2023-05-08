@@ -54,7 +54,7 @@ def handle_command(message):
             print(response_dict)
             socketio.emit('response', response_dict,namespace=namespace)
 
-
+#------------------USING THE WHISPER MODEL---------------
 # @socketio.on('audio-file')
 # def handle_transcribe(data):
 #     temp_dir = tempfile.mkdtemp()
@@ -123,6 +123,7 @@ def handle_transcribe(data):
     command=result['text']
     socketio.emit('transcription_result', command,namespace="/chatbot")
     handle_command(command)
+
 
 @socketio.on('helper',namespace="/chatbot")
 def helper_modal(data):

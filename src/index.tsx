@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@liquify/theme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -23,7 +24,9 @@ logPerformance("blotter-detail-render-started");
 
 ReactDOM.render(
     <Provider store={store}>
-        <ChatBot />
+        <ThemeProvider>
+            <ChatBot />
+        </ThemeProvider>
     </Provider>,
 
     document.getElementById("root")

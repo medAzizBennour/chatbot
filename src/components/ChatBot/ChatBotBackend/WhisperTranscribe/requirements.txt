@@ -1,7 +1,8 @@
-
 git+https://github.com/openai/whisper.git
 pandas
 openai
 secrets
 requests
 websocket-client
+flask_cors
+ldap3
