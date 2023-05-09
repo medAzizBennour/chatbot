@@ -71,6 +71,14 @@ def handle_command(message):
 #         print('commmaaand',command)
 #         socketio.emit('transcription_result', command)
 
+@socketio.on('connect',namespace="/buy_stock")
+def handle_connect():
+    print("place order Connected")
+
+
+@socketio.on('disconnect',namespace="/buy_stock")
+def handle_disconnect():
+    print("place order disconnected")
 
 @socketio.on('connect',namespace="/navigate")
 def handle_connect():
