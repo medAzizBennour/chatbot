@@ -53,8 +53,12 @@ def handle_command(message):
         }
             if intent=='filter':
                 emittedFilterData=response_dict
+                socketio.emit('response', emittedFilterData,namespace='/filter')
+
                 response_dict={'data': {'action': 'navigate', 'entities': {'page': 'orders'}}}
                 socketio.emit('filter', response_dict,namespace='/navigate')
+                
+
             else:
                 namespace='/'+intent
                 print(response_dict)
