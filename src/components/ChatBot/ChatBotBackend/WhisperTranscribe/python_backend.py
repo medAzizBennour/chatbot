@@ -27,8 +27,11 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 intents=["greet","goodbye","buy_stock","sell_stock","search","filter","navigate","stock_price","bot_challenge"]
 
 emittedFilterData={}
+order_data={}
+
 def handle_command(message):
     global emittedFilterData
+    global order_data
     headers = {'Content-Type': 'application/json'}
     data = json.dumps({'sender': 'test', 'message': message})
 # send the request to the endpoint and receive the response
@@ -54,14 +57,18 @@ def handle_command(message):
             if intent=='filter':
                 emittedFilterData=response_dict
                 socketio.emit('response', emittedFilterData,namespace='/filter')
-
                 response_dict={'data': {'action': 'navigate', 'entities': {'page': 'orders'}}}
                 socketio.emit('filter', response_dict,namespace='/navigate')
-                
+            elif intent == 'place_order' or intent == 'inform_stock':
+                namespace = '/place_order'
+                print("ziko",response_dict)
+                order_data = response_dict
+            elif intent == 'navigate' or intent == 'inform_page':
+                namespace = '/navigate'
             else:
                 namespace='/'+intent
-                print(response_dict)
-                socketio.emit('response', response_dict,namespace=namespace)
+            
+            socketio.emit('response', response_dict,namespace=namespace)
 
 #------------------USING THE WHISPER MODEL---------------
 # @socketio.on('audio-file')
@@ -114,14 +121,6 @@ def handle_filter():
 def handle_disconnect():
         print("Filter Disconnected")
 
-@socketio.on('connect',namespace="/helper")
-def handle_connect():
-    print("Helper Connected")
-
-@socketio.on('disconnect',namespace="/helper")
-def handle_disconnect():
-    print("Helper Disconnected")
-
 
 @socketio.on('connect',namespace="/search")
 def handle_connect():
@@ -131,6 +130,21 @@ def handle_connect():
 @socketio.on('disconnect',namespace="/search")
 def handle_disconnect():
     print("Search Disconnected")
+
+@socketio.on('connect',namespace="/place_order")
+def handle_connect():
+    print("place_order Connected")
+@socketio.on('disconnect',namespace="/place_order")
+def handle_disconnect():
+    print("place_order disconnected")
+@socketio.on('connect',namespace="/place_order_data")
+def handle_connect():
+    print('SENDING ', order_data)
+    socketio.emit('response',order_data,namespace='/place_order_data')
+@socketio.on('disconnect',namespace="/place_order_data")
+def handle_disconnect():
+    print("Buy disconnected")
+
 
 @socketio.on('audio-file',namespace="/chatbot")
 def handle_transcribe(data):
