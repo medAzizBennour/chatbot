@@ -6,10 +6,9 @@ import json
 import openai
 import whisper
 import sample_config as config
-from flask_socketio import SocketIO,join_room,leave_room
+from flask_socketio import SocketIO
 import secrets
 import requests
-import websocket
 import gpt_backend as gpt
 
 
@@ -27,7 +26,9 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 intents=["greet","goodbye","buy_stock","sell_stock","search","filter","navigate","stock_price","bot_challenge"]
 
+emittedFilterData={}
 def handle_command(message):
+    global emittedFilterData
     headers = {'Content-Type': 'application/json'}
     data = json.dumps({'sender': 'test', 'message': message})
 # send the request to the endpoint and receive the response
@@ -48,11 +49,16 @@ def handle_command(message):
         if 'entities' in payload_dict:
             entities = payload_dict['entities']
             response_dict = {
-            "data": { "action": intent,"entities":entities }
+            "data": { "action": intent,"entities":entities }   
         }
-            namespace='/'+intent
-            print(response_dict)
-            socketio.emit('response', response_dict,namespace=namespace)
+            if intent=='filter':
+                emittedFilterData=response_dict
+                response_dict={'data': {'action': 'navigate', 'entities': {'page': 'orders'}}}
+                socketio.emit('filter', response_dict,namespace='/navigate')
+            else:
+                namespace='/'+intent
+                print(response_dict)
+                socketio.emit('response', response_dict,namespace=namespace)
 
 #------------------USING THE WHISPER MODEL---------------
 # @socketio.on('audio-file')
@@ -92,6 +98,12 @@ def handle_disconnect():
 @socketio.on('connect',namespace="/filter")
 def handle_connect():
     print("Filter Connected")
+
+@socketio.on('blotter-loaded',namespace='/filter')
+def handle_filter():
+    if emittedFilterData:
+        socketio.emit('response', emittedFilterData,namespace='/filter')
+
 
 @socketio.on('disconnect',namespace="/filter")
 def handle_disconnect():
