@@ -58,7 +58,6 @@ def handle_command(message):
                 response_dict={'data': {'action': 'navigate', 'entities': {'page': 'orders'}}}
                 socketio.emit('filter', response_dict,namespace='/navigate')
                 
-
             else:
                 namespace='/'+intent
                 print(response_dict)
@@ -105,8 +104,10 @@ def handle_connect():
 
 @socketio.on('blotter-loaded',namespace='/filter')
 def handle_filter():
+    global emittedFilterData
     if emittedFilterData:
         socketio.emit('response', emittedFilterData,namespace='/filter')
+        emittedFilterData={}
 
 
 @socketio.on('disconnect',namespace="/filter")

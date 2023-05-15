@@ -24,7 +24,7 @@ class SubmitOrderFormAction(Action):
         intent = latest_message['intent']['name']
         stock_number = tracker.get_slot("stock_number")
         stock_company = tracker.get_slot("stock_company")
-        response_message="processing command..."
+        response_message="Processing command..."
         
 
         response_dict = {"intent": intent, "entities": [{"stock_number":stock_number},{"stock_company":stock_company}], "response": response_message}

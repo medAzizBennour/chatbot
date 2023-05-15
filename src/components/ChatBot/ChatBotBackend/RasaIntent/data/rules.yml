@@ -4,17 +4,17 @@ rules:
 
 - rule: Activate buy stock form
   steps:
-  - intent: buy_stock
-  - action: buy_stock_form
-  - active_loop: buy_stock_form
+  - intent: place_order
+  - action: place_order_form
+  - active_loop: place_order_form
 
 - rule: Submit buy stock form
   condition:
   # Condition that form is active.
-  - active_loop: buy_stock_form
+  - active_loop: place_order_form
   steps:
   # Form is deactivated
-  - action: buy_stock_form
+  - action: place_order_form
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
@@ -82,25 +82,6 @@ rules:
     - requested_slot: null
   - action: action_submit_filter_form
 
-
-- rule: Activate sell stock form
-  steps:
-  - intent: sell_stock
-  - action: sell_stock_form
-  - active_loop: sell_stock_form
-
-- rule: Submit sell stock form
-  condition:
-  # Condition that form is active.
-  - active_loop: sell_stock_form
-  steps:
-  # Form is deactivated
-  - action: sell_stock_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  # The actions we want to run when the form is submitted.
-  - action: action_submit_order_form
 
 - rule: handle error
   steps:

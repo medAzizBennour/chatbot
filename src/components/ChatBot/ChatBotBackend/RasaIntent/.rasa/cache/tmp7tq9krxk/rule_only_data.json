@@ -1,8 +1,0 @@
-{
-  "rule_only_slots": [],
-  "rule_only_loops": [
-    "search_form",
-    "filter_form",
-    "navigate_form"
-  ]
-}

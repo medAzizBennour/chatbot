@@ -2,27 +2,27 @@ version: '3.1'
 intents:
 - affirm
 - bot_challenge
-- buy_stock
 - deny
+- filter
 - goodbye
 - greet
 - inform_stock
 - mood_great
 - mood_unhappy
 - navigate
+- place_order
 - search
-- sell_stock
-- filter
 - thank
 entities:
-- page
-- stock_company
 - stock_number
+- stock_company
+- destination
+- order
+- page
 - query
 - filtered_obj
 - criteria
 - stock_list
-
 slots:
   stock_company:
     type: text
@@ -31,9 +31,17 @@ slots:
     - type: from_entity
       entity: stock_company
       intent:
-      - buy_stock
-      - sell_stock
       - inform_stock
+      - place_order
+  destination:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: destination
+      intent:
+      - inform_stock
+      - place_order
   page:
     type: text
     influence_conversation: true
@@ -42,6 +50,17 @@ slots:
       entity: page
       intent:
       - navigate
+  order:
+    type: categorical
+    influence_conversation: true
+    values:
+    - buy
+    - sell
+    mappings:
+    - type: from_entity
+      entity: order
+      intent:
+      - place_order
   stock_number:
     type: float
     influence_conversation: true
@@ -49,8 +68,7 @@ slots:
     - type: from_entity
       entity: stock_number
       intent:
-      - buy_stock
-      - sell_stock
+      - place_order
       - inform_stock
   query:
     type: text
@@ -67,7 +85,6 @@ slots:
     - type: from_entity
       entity: filtered_obj
       intent: filter
-
   criteria:
     type: text
     influence_conversation: true
@@ -83,14 +100,12 @@ slots:
       entity: stock_list
       intent: filter
 forms:
-  buy_stock_form:
+  place_order_form:
     required_slots:
+    - order
     - stock_company
     - stock_number
-  sell_stock_form:
-    required_slots:
-    - stock_company
-    - stock_number
+    - destination
   filter_form:
     required_slots:
     - criteria
@@ -134,28 +149,24 @@ responses:
   - text: Happy to help! Do come back if you need further assistance.
   - text: Not a problem! Glad I could be of assistance.
   - text: Anytime! Don't hesitate to reach out again if you need anything.
-
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 actions:
-- action_handle_fail_inform
 - action_submit_order_form
+- action_submit_navigate_form
+- action_handle_fail_inform
 - action_ask_stock_company
 - action_ask_stock_number
-
-- validate_buy_stock_form
-- action_submit_navigate_form
+- action_ask_destination
+- validate_place_order_form
 - action_ask_page
 - validate_navigate_form
 - action_submit_search_form
 - action_ask_query
 - action_default_fallback
-
 - action_ask_filtered_obj
 - action_ask_criteria
 - action_submit_filter_form
 - validate_filter_form
-
 - action_social_expresses
-

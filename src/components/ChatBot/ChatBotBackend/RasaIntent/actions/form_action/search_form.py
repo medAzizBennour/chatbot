@@ -20,14 +20,18 @@ class AskForQueryAction(Action):
     ) -> List[EventType]:
 
         # Get latest user message
-        latest_message = tracker.latest_message
-        param=tracker.latest_message['entities']
-        response_message=f"Please specify what you like to search {param}"
+        latest_message = tracker.latest_message.get("text")
+        #param=tracker.latest_message['entities']
+        if "search for" in latest_message.lower():
+            parameter = latest_message.split("search for", 1)[1].strip()
+            if parameter:
+                response_message=f"Searching for {parameter} {latest_message}"
+            else:    
+                response_message=f"Please specify what you like to search"
 
         # Get intent and extracted entities
         intent = latest_message['intent']['name']
-        query = tracker.get_slot("query")
-        response_dict = {"intent": intent, "entities": {"query":query}, "response": response_message}
+        response_dict = {"intent": intent, "entities": {"query":parameter}, "response": response_message}
 
         dispatcher.utter_message(json.dumps(response_dict))
         return []

@@ -19,14 +19,15 @@ class SubmitSearchFormAction(Action):
     ) -> List[EventType]:
         # Get latest user message
         latest_message = tracker.latest_message
+        message = tracker.latest_message.get("text")
+        parameter = message.split("search for", 1)[1].strip()
         
         # Get intent and extracted entities
         intent = latest_message['intent']['name']
-        query = tracker.get_slot("query")
-        response_message=f"Searching for {query}"
+        response_message=f"Searching for {parameter}"
         
 
-        response_dict = {"intent": intent, "entities": {"query":query}, "response": response_message}
+        response_dict = {"intent": intent, "entities": {"query":parameter}, "response": response_message}
 
         dispatcher.utter_message(json.dumps(response_dict))
         return [SlotSet("query", None)]

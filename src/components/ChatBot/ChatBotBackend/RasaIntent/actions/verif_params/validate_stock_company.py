@@ -12,7 +12,7 @@ from rasa_sdk.events import SlotSet, EventType
 
 class ValidateStockCompany(FormValidationAction):
     def name(self) -> Text:
-        return "validate_buy_stock_form"
+        return "validate_place_order_form"
 
     @staticmethod
     def securities_list() -> List[Text]:
