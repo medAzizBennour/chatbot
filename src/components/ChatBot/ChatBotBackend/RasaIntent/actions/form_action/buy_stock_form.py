@@ -7,8 +7,6 @@ from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet, EventType
 import json
 
-
-
     
 
 class AskForStockCompanyAction(Action):
@@ -25,9 +23,12 @@ class AskForStockCompanyAction(Action):
         
         # Get intent and extracted entities
         intent = latest_message['intent']['name']
+        action=tracker.get_slot("order")
         stock_number = tracker.get_slot("stock_number")
         stock_company = tracker.get_slot("stock_company")
-        response_dict = {"intent": intent, "entities": [{"stock_number":stock_number},{"stock_company":stock_company}], "response": response_message}
+        destination = tracker.get_slot("destination")
+        security_symbol = tracker.get_slot("security_symbol")
+        response_dict = {"intent": intent, "entities": {"stock_number":stock_number,"action":action,"stock_company":stock_company,"security_symbol":security_symbol,"destination":destination}, "response": response_message}
 
         dispatcher.utter_message(json.dumps(response_dict))
         return []
@@ -46,15 +47,17 @@ class AskForStockNumAction(Action):
         
         # Get intent and extracted entities
         intent = latest_message['intent']['name']
+        action=tracker.get_slot("order")
         stock_number = tracker.get_slot("stock_number")
         stock_company = tracker.get_slot("stock_company")
-        response_dict = {"intent": intent, "entities": [{"stock_number":stock_number},{"stock_company":stock_company}], "response": response_message}
+        destination = tracker.get_slot("destination")
+        security_symbol = tracker.get_slot("security_symbol")
+        response_dict = {"intent": intent, "entities": {"stock_number":stock_number,"stock_company":stock_company,"action":action,"security_symbol":security_symbol,"destination":destination}, "response": response_message}
 
         dispatcher.utter_message(json.dumps(response_dict))
         return []
 
-     
-class AskForStockNumAction(Action):
+class AskForDestinationAction(Action):
     def name(self) -> Text:
         return "action_ask_destination"
 
@@ -68,12 +71,15 @@ class AskForStockNumAction(Action):
         
         # Get intent and extracted entities
         intent = latest_message['intent']['name']
+        action=tracker.get_slot("order")
         stock_number = tracker.get_slot("stock_number")
         stock_company = tracker.get_slot("stock_company")
         destination = tracker.get_slot("destination")
-        order = tracker.get_slot("order")
-
-        response_dict = {"intent": intent, "entities":{"order":order,"stock_number":stock_number,"stock_company":stock_company,"destination":destination}, "response": response_message}
+        security_symbol = tracker.get_slot("security_symbol")
+        response_dict = {"intent": intent, "entities": {"stock_number":stock_number,"action":action,"stock_company":stock_company,"security_symbol":security_symbol,"destination":destination}, "response": response_message}
 
         dispatcher.utter_message(json.dumps(response_dict))
         return []
+
+     
+

@@ -6,6 +6,8 @@ intents:
 - filter
 - goodbye
 - greet
+- help
+- inform_page
 - inform_stock
 - mood_great
 - mood_unhappy
@@ -14,15 +16,16 @@ intents:
 - search
 - thank
 entities:
-- stock_number
-- stock_company
-- destination
-- order
 - page
-- query
 - filtered_obj
 - criteria
+- destination
+- stock_company
+- order
+- stock_number
 - stock_list
+- stock_map
+- security_symbol
 slots:
   stock_company:
     type: text
@@ -31,8 +34,18 @@ slots:
     - type: from_entity
       entity: stock_company
       intent:
-      - inform_stock
       - place_order
+      - inform_stock
+  security_symbol:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: security_symbol
+  stock_map:
+    type: list
+    mappings:
+    - type: from_entity
+      entity: stock_map
   destination:
     type: text
     influence_conversation: true
@@ -40,16 +53,8 @@ slots:
     - type: from_entity
       entity: destination
       intent:
-      - inform_stock
       - place_order
-  page:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: page
-      intent:
-      - navigate
+      - inform_stock
   order:
     type: categorical
     influence_conversation: true
@@ -61,6 +66,15 @@ slots:
       entity: order
       intent:
       - place_order
+  page:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: page
+      intent:
+      - navigate
+      - inform_page
   stock_number:
     type: float
     influence_conversation: true
@@ -70,14 +84,6 @@ slots:
       intent:
       - place_order
       - inform_stock
-  query:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: query
-      intent:
-      - search
   filtered_obj:
     type: text
     influence_conversation: true
@@ -102,7 +108,6 @@ slots:
 forms:
   place_order_form:
     required_slots:
-    - order
     - stock_company
     - stock_number
     - destination
@@ -113,9 +118,6 @@ forms:
   navigate_form:
     required_slots:
     - page
-  search_form:
-    required_slots:
-    - query
 responses:
   utter_greet:
   - text: Hi there! How can I assist you today?
@@ -149,24 +151,26 @@ responses:
   - text: Happy to help! Do come back if you need further assistance.
   - text: Not a problem! Glad I could be of assistance.
   - text: Anytime! Don't hesitate to reach out again if you need anything.
+  utter_help:
+  - text: Sure! Here's how you can use me!
+  - text: Here's how I can assist you!
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 actions:
-- action_submit_order_form
 - action_submit_navigate_form
-- action_handle_fail_inform
+- action_submit_filter_form
+- action_submit_search_form
+- action_submit_order_form
+- action_retrieve_data
 - action_ask_stock_company
 - action_ask_stock_number
 - action_ask_destination
 - validate_place_order_form
 - action_ask_page
 - validate_navigate_form
-- action_submit_search_form
-- action_ask_query
-- action_default_fallback
 - action_ask_filtered_obj
 - action_ask_criteria
-- action_submit_filter_form
 - validate_filter_form
 - action_social_expresses
+- action_default_fallback

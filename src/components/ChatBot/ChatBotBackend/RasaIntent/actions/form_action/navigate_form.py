@@ -19,7 +19,7 @@ class AskForPageAction(Action):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
 
-        response_message="Please specify the page"
+        response_message="Can you please provide a valid page?"
         # Get latest user message
         latest_message = tracker.latest_message
         

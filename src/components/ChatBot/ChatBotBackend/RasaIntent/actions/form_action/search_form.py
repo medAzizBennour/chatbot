@@ -10,7 +10,6 @@ import json
 
 
     
-
 class AskForQueryAction(Action):
     def name(self) -> Text:
         return "action_ask_query"
@@ -19,19 +18,24 @@ class AskForQueryAction(Action):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
 
-        # Get latest user message
         latest_message = tracker.latest_message.get("text")
-        #param=tracker.latest_message['entities']
+        parameter = None
+
         if "search for" in latest_message.lower():
             parameter = latest_message.split("search for", 1)[1].strip()
             if parameter:
-                response_message=f"Searching for {parameter} {latest_message}"
-            else:    
-                response_message=f"Please specify what you like to search"
+                response_message = f"Searching for {parameter} {latest_message}"
+            else:
+                response_message = "Please specify what you would like to search"
 
-        # Get intent and extracted entities
-        intent = latest_message['intent']['name']
-        response_dict = {"intent": intent, "entities": {"query":parameter}, "response": response_message}
+        # Get intent from tracker.latest_message['intent']
+        intent = tracker.latest_message['intent'].get('name') if 'intent' in tracker.latest_message else None
+
+        response_dict = {
+            "intent": intent,
+            "entities": {"query": parameter},
+            "response": response_message
+        }
 
         dispatcher.utter_message(json.dumps(response_dict))
         return []

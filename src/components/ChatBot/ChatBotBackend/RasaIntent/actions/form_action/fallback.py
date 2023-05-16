@@ -24,3 +24,4 @@ class FallbackAction(Action):
         response_dict = {"intent": "fallback", "response":default_message}
         # Send response message using dispatcher
         dispatcher.utter_message(json.dumps(response_dict))
+        return []

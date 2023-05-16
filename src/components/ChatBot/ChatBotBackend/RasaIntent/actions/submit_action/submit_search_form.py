@@ -21,13 +21,22 @@ class SubmitSearchFormAction(Action):
         latest_message = tracker.latest_message
         message = tracker.latest_message.get("text")
         parameter = message.split("search for", 1)[1].strip()
+
         
         # Get intent and extracted entities
         intent = latest_message['intent']['name']
-        response_message=f"Searching for {parameter}"
+        if parameter:
+            response_message=f"Searching for {parameter}"
         
 
-        response_dict = {"intent": intent, "entities": {"query":parameter}, "response": response_message}
+            response_dict = {"intent": intent, "entities": {"query":parameter}, "response": response_message}
 
-        dispatcher.utter_message(json.dumps(response_dict))
-        return [SlotSet("query", None)]
+            dispatcher.utter_message(json.dumps(response_dict))
+        else:
+            response_message=f"I'm sorry, but your search term is invalid. Please enter a valid search term."
+        
+
+            response_dict = {"intent": intent, "entities": {"query":None}, "response": response_message}
+
+            dispatcher.utter_message(json.dumps(response_dict))
+        return []

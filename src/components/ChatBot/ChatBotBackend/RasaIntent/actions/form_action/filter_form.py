@@ -27,7 +27,7 @@ class AskForFilteredObjAction(Action):
         intent = latest_message['intent']['name']
         filtered_obj = tracker.get_slot("filtered_obj")
         criteria = tracker.get_slot("criteria")
-        response_dict = {"intent": intent, "entities": [{"filtered_obj":filtered_obj},{"criteria":criteria}], "response": response_message}
+        response_dict = {"intent": intent, "entities": {"filtered_obj":filtered_obj,"criteria":criteria}, "response": response_message}
 
         dispatcher.utter_message(json.dumps(response_dict))
         return []
@@ -48,7 +48,7 @@ class AskForCriteriaAction(Action):
         intent = latest_message['intent']['name']
         filtered_obj = tracker.get_slot("filtered_obj")
         criteria = tracker.get_slot("criteria")
-        response_dict = {"intent": intent, "entities": [{"filtered_obj":filtered_obj},{"critera":criteria}], "response": response_message}
+        response_dict = {"intent": intent, "entities": {"filtered_obj":filtered_obj,"critera":criteria}, "response": response_message}
 
         dispatcher.utter_message(json.dumps(response_dict))
         return []

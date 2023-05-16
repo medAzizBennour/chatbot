@@ -1,7 +1,0 @@
-{
-  "rule_only_slots": [],
-  "rule_only_loops": [
-    "restaurant_form",
-    "buy_stock_form"
-  ]
-}

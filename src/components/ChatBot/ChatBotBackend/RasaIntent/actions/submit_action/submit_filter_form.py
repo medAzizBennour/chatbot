@@ -24,10 +24,10 @@ class SubmitFilterFormAction(Action):
         intent = latest_message['intent']['name']
         filtered_obj = tracker.get_slot("filtered_obj")
         criteria = tracker.get_slot("criteria")
-        response_message="processing command..."
+        response_message="Processing command..."
         
 
-        response_dict = {"intent": intent, "entities": [{"filtered_obj":filtered_obj},{"criteria":criteria}], "response": response_message}
+        response_dict = {"intent": intent, "entities": {"filtered_obj":filtered_obj,"criteria":criteria}, "response": response_message}
 
         dispatcher.utter_message(json.dumps(response_dict))
         return [SlotSet("filtered_obj", None),SlotSet("criteria", None)]

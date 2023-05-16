@@ -24,7 +24,7 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 
-intents=["greet","goodbye","buy_stock","sell_stock","search","filter","navigate","stock_price","bot_challenge"]
+intents=["greet","goodbye","place_order","search","filter","navigate","stock_price","bot_challenge","thank","help","inform_stock","inform_page"]
 
 emittedFilterData={}
 order_data={}
@@ -56,19 +56,27 @@ def handle_command(message):
         }
             if intent=='filter':
                 emittedFilterData=response_dict
+                
+                filtered_obj=response_dict['data']['entities']['filtered_obj']
+                
+                response_dict={'data': {'action': 'navigate', 'entities': {'page': filtered_obj}}}
+                socketio.emit('response', response_dict,namespace='/navigate')
                 socketio.emit('response', emittedFilterData,namespace='/filter')
-                response_dict={'data': {'action': 'navigate', 'entities': {'page': 'orders'}}}
-                socketio.emit('filter', response_dict,namespace='/navigate')
-            elif intent == 'place_order' or intent == 'inform_stock':
-                namespace = '/place_order'
-                print("ziko",response_dict)
-                order_data = response_dict
-            elif intent == 'navigate' or intent == 'inform_page':
-                namespace = '/navigate'
+
+
             else:
-                namespace='/'+intent
+                if intent == 'place_order' or intent == 'inform_stock':
+                    namespace = '/place_order'
+                    print("ziko",response_dict)
+                    order_data = response_dict
+                elif intent == 'navigate' or intent == 'inform_page':
+                    namespace = '/navigate'
+                else:
+                    namespace='/'+intent
+                socketio.emit('response', response_dict,namespace=namespace)
+                print(response_dict)
             
-            socketio.emit('response', response_dict,namespace=namespace)
+            
 
 #------------------USING THE WHISPER MODEL---------------
 # @socketio.on('audio-file')

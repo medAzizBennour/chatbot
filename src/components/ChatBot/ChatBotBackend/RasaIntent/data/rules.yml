@@ -5,6 +5,8 @@ rules:
 - rule: Activate buy stock form
   steps:
   - intent: place_order
+  - action: action_retrieve_data
+
   - action: place_order_form
   - active_loop: place_order_form
 
@@ -47,21 +49,7 @@ rules:
 
 - rule: Activate search form
   steps:
-  - intent: search
-  - action: search_form
-  - active_loop: search_form
-  
-
-- rule: Submit search form
-  condition:
-  # Condition that form is active.
-  - active_loop: search_form
-  steps:
-  # Form is deactivated
-  - action: search_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
+  - intent: search 
   - action: action_submit_search_form
 
 - rule: Activate filter form
@@ -83,11 +71,6 @@ rules:
   - action: action_submit_filter_form
 
 
-- rule: handle error
-  steps:
-  - intent: inform_stock
-  - action: action_handle_fail_inform
-
 - rule: goodbye action
   steps:
     - intent: goodbye
@@ -101,6 +84,11 @@ rules:
 - rule: thank action
   steps:
     - intent: thank
+    - action: action_social_expresses
+
+- rule: help action
+  steps:
+    - intent: help
     - action: action_social_expresses
 
 - rule: i am a bot action

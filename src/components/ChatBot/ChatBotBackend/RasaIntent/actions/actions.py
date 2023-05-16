@@ -7,7 +7,7 @@ from rasa_sdk.types import DomainDict
 
 from rasa_sdk.events import SlotSet, EventType
 
-from .form_action.buy_stock_form import AskForStockNumAction,AskForStockCompanyAction
+from .form_action.buy_stock_form import AskForStockNumAction,AskForStockCompanyAction,AskForDestinationAction
 from .form_action.navigate_form import AskForPageAction
 from .form_action.search_form import AskForQueryAction
 from .form_action.handle_fail_inform import HandleFailInformAction
@@ -21,12 +21,13 @@ from .submit_action.submit_order_form import SubmitOrderFormAction
 from .submit_action.submit_search_form import SubmitSearchFormAction
 from .submit_action.submit_filter_form import SubmitFilterFormAction
 
+
 from .verif_params.validate_stock_company import ValidateStockCompany
 from .verif_params.validate_page import ValidatePage
 from .verif_params.validate_filtered_obj import ValidateFilteredObj
 from .verif_params.validate_criteria import ValidateFilteredObj
 
-
+from .retrieveDataFromDB import RetrieveDataFromDB
 
 class ValidateRestaurantForm(FormValidationAction):
     def name(self) -> Text:
@@ -55,69 +56,3 @@ class ValidateRestaurantForm(FormValidationAction):
 
         return {"outdoor_seating": sit_outside}
     
-class AskForSlotAction(Action):
-    def name(self) -> Text:
-        return "action_ask_restaurant_form_cuisine"
-
-    def run(
-        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
-    ) -> List[EventType]:
-        dispatcher.utter_message(text="What cuisine?")
-        return []
-
-class AskForSlotAction(Action):
-    def name(self) -> Text:
-        return "action_ask_restaurant_form_num_people"
-
-    def run(
-        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
-    ) -> List[EventType]:
-        dispatcher.utter_message(text="For how many people?")
-        return []
-
-class AskForSlotAction(Action):
-    def name(self) -> Text:
-        return "action_ask_restaurant_form_outdoor_seating"
-
-    def run(
-        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
-    ) -> List[EventType]:
-        dispatcher.utter_message(text="would you like to sit outside?")
-        return []
-     
-class ValidateRestaurantForm(FormValidationAction):
-    def name(self) -> Text:
-        return "validate_restaurant_form"
-
-    @staticmethod
-    def cuisine_db() -> List[Text]:
-        """Database of supported cuisines"""
-
-        return ["caribbean", "chinese", "french","italian"]
-
-    def validate_cuisine(
-        self,
-        slot_value: Any,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: DomainDict,
-    ) -> Dict[Text, Any]:
-        """Validate cuisine value."""
-
-        if slot_value.lower() in self.cuisine_db():
-            # validation succeeded, set the value of the "cuisine" slot to value
-            return {"cuisine": slot_value}
-        else:
-            # validation failed, set this slot to None so that the
-            # user will be asked for the slot again
-            return {"cuisine": None}
-
-class SubmitFormAction(Action):
-    def name(self) -> Text:
-        return "action_submit_form"
-
-    def run(
-        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
-    ) -> List[EventType]:
-        dispatcher.utter_message(text="submiiiit")
-        return []

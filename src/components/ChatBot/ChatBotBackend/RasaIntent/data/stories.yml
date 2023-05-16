@@ -6,295 +6,44 @@ stories:
 - story: interactive_story_1
   steps:
   - intent: place_order
+    entities:
+    - order: buy
+  - slot_was_set:
+    - order: buy
+  - action: action_retrieve_data
+  - slot_was_set:
+    - stock_map:
+        CW: Cable & Wireless Ord 25P
+        EK: Eastman Kodak
+        IBM: International Business Machines
+        MSFT: Microsoft Corp.
+        AMR: American Airlines
   - action: place_order_form
   - active_loop: place_order_form
+  - slot_was_set:
+    - order: buy
   - slot_was_set:
     - requested_slot: stock_company
   - intent: inform_stock
     entities:
-    - stock_number: '10'
-    - stock_company: tesla
+    - stock_company: IBM
   - slot_was_set:
-    - stock_company: tesla
-  - slot_was_set:
-    - stock_number: '10'
+    - stock_company: IBM
   - action: place_order_form
   - slot_was_set:
-    - stock_company: tesla
+    - stock_company: International Business Machines
   - slot_was_set:
-    - stock_number: '10'
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_submit_order_form
-  - slot_was_set:
-    - stock_company: null
-  - slot_was_set:
-    - stock_number: null
-
-
-- story: interactive_story_2
-  steps:
-  - intent: place_order
-  - action: place_order_form
-  - active_loop: place_order_form
-  - slot_was_set:
-    - requested_slot: stock_company
-  - intent: inform_stock
-    entities:
-    - stock_company: nvidia
-  - slot_was_set:
-    - stock_company: nvidia
-  - action: place_order_form
-  - slot_was_set:
-    - stock_company: nvidia
+    - security_symbol: IBM
   - slot_was_set:
     - requested_slot: stock_number
   - intent: inform_stock
     entities:
-    - stock_number: '10'
-  - slot_was_set:
-    - stock_number: '10'
-  - action: place_order_form
-  - slot_was_set:
-    - stock_number: '10'
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_submit_order_form
-  - slot_was_set:
-    - stock_company: null
-  - slot_was_set:
-    - stock_number: null
-  - intent: place_order
-  - action: place_order_form
-  - active_loop: place_order_form
-  - slot_was_set:
-    - requested_slot: stock_company
-  - intent: inform_stock
-    entities:
     - stock_number: '100'
-    - stock_company: IBM
-  - slot_was_set:
-    - stock_company: IBM
   - slot_was_set:
     - stock_number: '100'
   - action: place_order_form
   - slot_was_set:
-    - stock_company: null
-  - slot_was_set:
     - stock_number: '100'
-  - slot_was_set:
-    - requested_slot: stock_company
-
-- story: interactive_story_1
-  steps:
-  - intent: inform_stock
-    entities:
-    - stock_company: tesla
-  - slot_was_set:
-    - stock_company: tesla
-  - action: action_handle_fail_inform
-
-- story: interactive_story_1
-  steps:
-  - intent: inform_stock
-    entities:
-    - stock_company: nvidia
-  - slot_was_set:
-    - stock_company: nvidia
-  - action: action_handle_fail_inform
-  - intent: inform_stock
-    entities:
-    - stock_number: '20'
-    - stock_company: google
-  - slot_was_set:
-    - stock_company: google
-  - slot_was_set:
-    - stock_number: '20'
-  - action: action_handle_fail_inform
-
-- story: interactive_story_3
-  steps:
-  - intent: place_order
-  - action: place_order_form
-  - active_loop: place_order_form
-  - slot_was_set:
-    - requested_slot: stock_company
-  - intent: inform_stock
-    entities:
-    - stock_company: nvidia
-  - slot_was_set:
-    - stock_company: nvidia
-  - action: place_order_form
-  - slot_was_set:
-    - stock_company: nvidia
-  - slot_was_set:
-    - requested_slot: stock_number
-  - intent: inform_stock
-    entities:
-    - stock_number: '10'
-  - slot_was_set:
-    - stock_number: '10'
-  - action: place_order_form
-  - slot_was_set:
-    - stock_number: '10'
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_submit_order_form
-  - slot_was_set:
-    - stock_company: null
-  - slot_was_set:
-    - stock_number: null
-  - intent: place_order
-  - action: place_order_form
-  - active_loop: place_order_form
-  - slot_was_set:
-    - requested_slot: stock_company
-  - intent: inform_stock
-    entities:
-    - stock_number: '100'
-    - stock_company: IBM
-  - slot_was_set:
-    - stock_company: IBM
-  - slot_was_set:
-    - stock_number: '100'
-  - action: place_order_form
-  - slot_was_set:
-    - stock_company: null
-  - slot_was_set:
-    - stock_number: '100'
-  - slot_was_set:
-    - requested_slot: stock_company
-
-
-
-
-
-
-- story: interactive_story_naviation
-  steps:
-  - intent: place_order
-    entities:
-    - order: buy
-    - stock_number: '30'
-    - stock_company: tesla
-    - destination: gold
-  - slot_was_set:
-    - stock_company: tesla
-  - slot_was_set:
-    - destination: gold
-  - slot_was_set:
-    - order: buy
-  - slot_was_set:
-    - stock_number: '30'
-  - action: place_order_form
-  - active_loop: place_order_form
-  - slot_was_set:
-    - order: buy
-  - slot_was_set:
-    - stock_company: tesla
-  - slot_was_set:
-    - stock_number: '30'
-  - slot_was_set:
-    - destination: gold
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_submit_order_form
-  - slot_was_set:
-    - stock_company: null
-  - slot_was_set:
-    - stock_number: null
-  - intent: navigate
-    entities:
-    - page: dashboard
-  - slot_was_set:
-    - page: dashboard
-  - action: navigate_form
-  - active_loop: navigate_form
-  - slot_was_set:
-    - page: dashboard
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_submit_navigate_form
-  - slot_was_set:
-    - page: null
-  - intent: navigate
-    entities:
-    - page: orders
-  - slot_was_set:
-    - page: orders
-  - action: navigate_form
-  - active_loop: navigate_form
-  - slot_was_set:
-    - page: orders
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_submit_navigate_form
-  - slot_was_set:
-    - page: null
-  - intent: navigate
-    entities:
-    - page: placements
-  - slot_was_set:
-    - page: placements
-  - action: navigate_form
-  - active_loop: navigate_form
-  - slot_was_set:
-    - page: placements
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_submit_navigate_form
-  - slot_was_set:
-    - page: null
-  - intent: navigate
-    entities:
-    - page: dashboard
-  - slot_was_set:
-    - page: dashboard
-  - action: navigate_form
-  - active_loop: navigate_form
-  - slot_was_set:
-    - page: dashboard
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_submit_navigate_form
-  - slot_was_set:
-    - page: null
-
-- story: interactive_story_1
-  steps:
-  - intent: place_order
-    entities:
-    - order: buy
-  - slot_was_set:
-    - order: buy
-  - action: place_order_form
-  - active_loop: place_order_form
-  - slot_was_set:
-    - order: buy
-  - slot_was_set:
-    - requested_slot: stock_company
-  - intent: inform_stock
-    entities:
-    - stock_company: nvidia
-  - slot_was_set:
-    - stock_company: nvidia
-  - action: place_order_form
-  - intent: inform_stock
-    entities:
-    - stock_number: '200'
-  - slot_was_set:
-    - stock_number: '200'
-  - action: place_order_form
-  - slot_was_set:
-    - stock_number: '200'
   - slot_was_set:
     - requested_slot: destination
   - intent: inform_stock
@@ -313,32 +62,60 @@ stories:
     - stock_company: null
   - slot_was_set:
     - stock_number: null
+  - slot_was_set:
+    - destination: null
+
+- story: interactive_story_2
+  steps:
   - intent: place_order
     entities:
     - order: sell
-    - stock_number: '20'
   - slot_was_set:
     - order: sell
+  - action: action_retrieve_data
   - slot_was_set:
-    - stock_number: '20'
+    - stock_map:
+        CW: Cable & Wireless Ord 25P
+        EK: Eastman Kodak
+        IBM: International Business Machines
+        MSFT: Microsoft Corp.
+        AMR: American Airlines
   - action: place_order_form
   - active_loop: place_order_form
   - slot_was_set:
     - order: sell
   - slot_was_set:
-    - stock_number: '20'
-  - slot_was_set:
-    - destination: gold
-  - slot_was_set:
     - requested_slot: stock_company
   - intent: inform_stock
     entities:
-    - stock_company: tesla
+    - stock_company: American Airlines
   - slot_was_set:
-    - stock_company: tesla
+    - stock_company: American Airlines
   - action: place_order_form
   - slot_was_set:
-    - stock_company: tesla
+    - stock_company: American Airlines
+  - slot_was_set:
+    - security_symbol: AMR
+  - slot_was_set:
+    - requested_slot: stock_number
+  - intent: inform_stock
+    entities:
+    - stock_number: '1000'
+  - slot_was_set:
+    - stock_number: '1000'
+  - action: place_order_form
+  - slot_was_set:
+    - stock_number: '1000'
+  - slot_was_set:
+    - requested_slot: destination
+  - intent: inform_stock
+    entities:
+    - destination: gold
+  - slot_was_set:
+    - destination: gold
+  - action: place_order_form
+  - slot_was_set:
+    - destination: gold
   - slot_was_set:
     - requested_slot: null
   - active_loop: null
@@ -347,3 +124,156 @@ stories:
     - stock_company: null
   - slot_was_set:
     - stock_number: null
+  - slot_was_set:
+    - destination: null
+  - intent: place_order
+    entities:
+    - order: buy
+    - stock_number: '200'
+    - stock_company: AMR
+    - destination: gold
+  - slot_was_set:
+    - stock_company: AMR
+  - slot_was_set:
+    - destination: gold
+  - slot_was_set:
+    - order: buy
+  - slot_was_set:
+    - stock_number: '200'
+  - action: action_retrieve_data
+  - slot_was_set:
+    - stock_map:
+        CW: Cable & Wireless Ord 25P
+        EK: Eastman Kodak
+        IBM: International Business Machines
+        MSFT: Microsoft Corp.
+        AMR: American Airlines
+  - action: place_order_form
+  - active_loop: place_order_form
+  - slot_was_set:
+    - stock_company: American Airlines
+  - slot_was_set:
+    - stock_number: '200'
+  - slot_was_set:
+    - destination: gold
+  - slot_was_set:
+    - security_symbol: AMR
+  - slot_was_set:
+    - order: buy
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_order_form
+  - slot_was_set:
+    - stock_company: null
+  - slot_was_set:
+    - stock_number: null
+  - slot_was_set:
+    - destination: null
+
+- story: interactive_story_1
+  steps:
+  - intent: search
+  - action: action_submit_search_form
+  - intent: search
+  - action: action_submit_search_form
+  - intent: search
+  - action: action_submit_search_form
+  - intent: search
+  - action: action_submit_search_form
+
+- story: interactive_story_1
+  steps:
+  - intent: navigate
+    entities:
+    - page: orders
+  - slot_was_set:
+    - page: orders
+  - action: navigate_form
+  - active_loop: navigate_form
+  - slot_was_set:
+    - page: orders
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_navigate_form
+  - slot_was_set:
+    - page: null
+  - intent: navigate
+    entities:
+    - page: dashboard
+  - slot_was_set:
+    - page: dashboard
+  - action: navigate_form
+  - active_loop: navigate_form
+  - slot_was_set:
+    - page: dashboard
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_navigate_form
+  - slot_was_set:
+    - page: null
+  - intent: navigate
+  - action: navigate_form
+  - active_loop: navigate_form
+  - slot_was_set:
+    - requested_slot: page
+  - intent: inform_page
+    entities:
+    - page: orders
+  - slot_was_set:
+    - page: orders
+  - action: navigate_form
+  - slot_was_set:
+    - page: orders
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_navigate_form
+  - slot_was_set:
+    - page: null
+  - intent: filter
+    entities:
+    - filtered_obj: orders
+    - criteria: working
+  - slot_was_set:
+    - filtered_obj: orders
+  - slot_was_set:
+    - criteria: working
+  - action: filter_form
+  - active_loop: filter_form
+  - slot_was_set:
+    - criteria: working
+  - slot_was_set:
+    - filtered_obj: orders
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_filter_form
+  - slot_was_set:
+    - filtered_obj: null
+  - slot_was_set:
+    - criteria: null
+  - intent: filter
+    entities:
+    - filtered_obj: orders
+    - criteria: new
+  - slot_was_set:
+    - filtered_obj: orders
+  - slot_was_set:
+    - criteria: new
+  - action: filter_form
+  - active_loop: filter_form
+  - slot_was_set:
+    - criteria: new
+  - slot_was_set:
+    - filtered_obj: orders
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_filter_form
+  - slot_was_set:
+    - filtered_obj: null
+  - slot_was_set:
+    - criteria: null

@@ -25,7 +25,8 @@ class SocialExpressesAction(Action):
             "greet": "utter_greet",
             "goodbye": "utter_goodbye",
             "thank":"utter_thank",
-            "bot_challenge":"utter_iamabot"
+            "bot_challenge":"utter_iamabot",
+            "help":"utter_help"
         }
         # Get intent and extracted entities
         intent = latest_message['intent']['name']
