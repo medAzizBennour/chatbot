@@ -3,6 +3,7 @@ import os
 import tempfile
 import flask
 import json
+import aiohttp
 import openai
 import whisper
 import sample_config as config
@@ -29,15 +30,16 @@ intents=["greet","goodbye","place_order","search","filter","navigate","stock_pri
 emittedFilterData={}
 order_data={}
 
-def handle_command(message):
+def handle_command (message):
     global emittedFilterData
     global order_data
     headers = {'Content-Type': 'application/json'}
     data = json.dumps({'sender': 'test', 'message': message})
 # send the request to the endpoint and receive the response
-    response = requests.post(rasa_url, headers=headers, data=data)
+    response =requests.post(rasa_url, headers=headers, data=data)
     response_json = response.json()
     # Extracting the JSON payload from the text field
+    print(response_json)
     json_payload = response_json[0]['text']
 # Parsing the JSON payload into a dictionary
     payload_dict = json.loads(json_payload)
@@ -165,9 +167,9 @@ def handle_transcribe(data):
 
     # result = audio_model.transcribe(save_path, fp16=False, language='english')
     print(save_path)
-    result=openai.Audio.transcribe("whisper-1", audio_file)
+    result=openai.Audio.transcribe("whisper-1", audio_file,language='EN')
     print("resuuults",result.text)
-    command=result['text']
+    command=result.text
     socketio.emit('transcription_result', command,namespace="/chatbot")
     handle_command(command)
 
