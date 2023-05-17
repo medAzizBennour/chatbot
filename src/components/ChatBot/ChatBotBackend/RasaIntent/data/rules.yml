@@ -1,97 +1,96 @@
-version: "3.1"
+version: '3.1'
 
 rules:
+  - rule: Activate buy stock form
+    steps:
+      - intent: place_order
+      - action: action_retrieve_data
 
-- rule: Activate buy stock form
-  steps:
-  - intent: place_order
-  - action: action_retrieve_data
+      - action: place_order_form
+      - active_loop: place_order_form
 
-  - action: place_order_form
-  - active_loop: place_order_form
+  - rule: Submit buy stock form
+    condition:
+      # Condition that form is active.
+      - active_loop: place_order_form
+    steps:
+      # Form is deactivated
+      - action: place_order_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      # The actions we want to run when the form is submitted.
+      - action: action_submit_order_form
 
-- rule: Submit buy stock form
-  condition:
-  # Condition that form is active.
-  - active_loop: place_order_form
-  steps:
-  # Form is deactivated
-  - action: place_order_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  # The actions we want to run when the form is submitted.
-  - action: action_submit_order_form
+  - rule: Activate navigate form
+    steps:
+      - intent: navigate
+      - action: navigate_form
+      - active_loop: navigate_form
 
-- rule: Activate navigate form
-  steps:
-  - intent: navigate
-  - action: navigate_form
-  - active_loop: navigate_form
+  - rule: Submit navigate form
+    condition:
+      # Condition that form is active.
+      - active_loop: navigate_form
+    steps:
+      # Form is deactivated
+      - action: navigate_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      # The actions we want to run when the form is submitted.
+      - action: action_submit_navigate_form
 
-- rule: Submit navigate form
-  condition:
-  # Condition that form is active.
-  - active_loop: navigate_form
-  steps:
-  # Form is deactivated
-  - action: navigate_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  # The actions we want to run when the form is submitted.
-  - action: action_submit_navigate_form
+  - rule: Handle fallback intent whenever they send a message with low NLU confidence
+    steps:
+      - intent: nlu_fallback
+      - action: action_default_fallback
+      - action: action_listen
 
-- rule: Handle fallback intent whenever they send a message with low NLU confidence
-  steps:
-  - intent: nlu_fallback
-  - action: action_default_fallback
+  - rule: Activate search form
+    steps:
+      - intent: search
+      - action: action_submit_search_form
 
-- rule: Activate search form
-  steps:
-  - intent: search 
-  - action: action_submit_search_form
+  - rule: Activate filter form
+    steps:
+      - intent: filter
+      - action: filter_form
+      - active_loop: filter_form
 
-- rule: Activate filter form
-  steps:
-  - intent: filter
-  - action: filter_form
-  - active_loop: filter_form
+  - rule: Submit filter form
+    condition:
+      # Condition that form is active.
+      - active_loop: filter_form
+    steps:
+      # Form is deactivated
+      - action: filter_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_submit_filter_form
 
-- rule: Submit filter form
-  condition:
-  # Condition that form is active.
-  - active_loop: filter_form
-  steps:
-  # Form is deactivated
-  - action: filter_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - action: action_submit_filter_form
+  - rule: goodbye action
+    steps:
+      - intent: goodbye
+      - action: action_social_expresses
 
+  - rule: greet action
+    steps:
+      - intent: greet
+      - action: action_social_expresses
 
-- rule: goodbye action
-  steps:
-    - intent: goodbye
-    - action: action_social_expresses
+  - rule: thank action
+    steps:
+      - intent: thank
+      - action: action_social_expresses
 
-- rule: greet action
-  steps:
-    - intent: greet
-    - action: action_social_expresses
+  - rule: help action
+    steps:
+      - intent: help
+      - action: action_social_expresses
 
-- rule: thank action
-  steps:
-    - intent: thank
-    - action: action_social_expresses
-
-- rule: help action
-  steps:
-    - intent: help
-    - action: action_social_expresses
-
-- rule: i am a bot action
-  steps:
-    - intent: bot_challenge
-    - action: action_social_expresses
+  - rule: i am a bot action
+    steps:
+      - intent: bot_challenge
+      - action: action_social_expresses

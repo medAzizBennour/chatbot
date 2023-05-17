@@ -11,6 +11,7 @@ from flask_socketio import SocketIO
 import secrets
 import requests
 import gpt_backend as gpt
+import traceback
 
 
 
@@ -34,49 +35,68 @@ def handle_command (message):
     global emittedFilterData
     global order_data
     headers = {'Content-Type': 'application/json'}
-    data = json.dumps({'sender': 'test', 'message': message})
-# send the request to the endpoint and receive the response
-    response =requests.post(rasa_url, headers=headers, data=data)
-    response_json = response.json()
-    # Extracting the JSON payload from the text field
-    json_payload = response_json[0]['text']
-# Parsing the JSON payload into a dictionary
-    payload_dict = json.loads(json_payload)
-# Extracting the intent, entities, and response message
-    intent = payload_dict['intent']
-    print(intent)
-    if intent not in intents:
-        response_message=gpt.GptMessage(message)
-        socketio.emit('response-text', response_message,namespace="/chatbot")
-    else:
-        response_message = payload_dict['response']
-        socketio.emit('response-text', response_message,namespace="/chatbot")
-        if intent=='help':
-            socketio.emit('response', {'data': {'action': 'navigate', 'entities': {'page': 'help'}}},namespace='/navigate')
-        elif 'entities' in payload_dict:
-            entities = payload_dict['entities']
-            response_dict = {
-            "data": { "action": intent,"entities":entities }   
-        }
-            if intent=='filter':
-                emittedFilterData=response_dict
-                
-                filtered_obj=response_dict['data']['entities']['filtered_obj']
-                
-                response_dict={'data': {'action': 'navigate', 'entities': {'page': filtered_obj}}}
-                socketio.emit('response', response_dict,namespace='/navigate')
-                socketio.emit('response', emittedFilterData,namespace='/filter')
-
-            else:                    
-                if intent == 'place_order' or intent == 'inform_stock':
-                    namespace = '/place_order'
-                    order_data = response_dict
-                elif intent == 'navigate' or intent == 'inform_page':
-                    namespace = '/navigate'
+    try:
+        data = json.dumps({'sender': 'test', 'message': message})
+        if  len(data)==0:
+            response_message="The system is currently processing an error that occurred while attempting to handle your message."
+            socketio.emit('response-text', response_message,namespace="/chatbot")
+            # send the request to the endpoint and receive the response
+        else:
+            response =requests.post(rasa_url, headers=headers, data=data)
+            print(response.json())
+            response_json = response.json()
+            if len(response_json)>0:
+                # Extracting the JSON payload from the text field
+                json_payload = response_json[0]['text']
+                # Parsing the JSON payload into a dictionary
+                payload_dict = json.loads(json_payload)
+                # Extracting the intent, entities, and response message
+                intent = payload_dict['intent']
+                print(intent)
+                if intent not in intents:
+                    response_message=gpt.GptMessage(message)
+                    socketio.emit('response-text', response_message,namespace="/chatbot")
                 else:
-                    namespace='/'+intent
-                socketio.emit('response', response_dict,namespace=namespace)
-                print(response_dict)
+                    response_message = payload_dict['response']
+                    socketio.emit('response-text', response_message,namespace="/chatbot")
+                    if intent=='help':
+                        socketio.emit('response', {'data': {'action': 'navigate', 'entities': {'page': 'help'}}},namespace='/navigate')
+                    elif 'entities' in payload_dict:
+                        entities = payload_dict['entities']
+                        response_dict = {
+                        "data": { "action": intent,"entities":entities }   
+                    }
+                        if intent=='filter':
+                            emittedFilterData=response_dict
+
+                            filtered_obj=response_dict['data']['entities']['filtered_obj']
+
+                            response_dict={'data': {'action': 'navigate', 'entities': {'page': filtered_obj}}}
+                            socketio.emit('response', response_dict,namespace='/navigate')
+                            socketio.emit('response', emittedFilterData,namespace='/filter')
+                        else:                    
+                            if intent == 'place_order' or intent == 'inform_stock':
+                                socketio.emit('response', {'data': {'action': 'navigate', 'entities': {'page': 'orders'}}},namespace='/navigate')
+                                namespace = '/place_order'
+                                order_data = response_dict
+                            elif intent == 'navigate' or intent == 'inform_page':
+                                namespace = '/navigate'
+                            else:
+                                namespace='/'+intent
+                            socketio.emit('response', response_dict,namespace=namespace)
+                            print(response_dict)
+            else:
+                error_message = "No response received from the server."
+                socketio.emit('response-text', error_message, namespace="/chatbot")
+    except ConnectionRefusedError:
+        error_message = "An error occurred while processing the command. Reconnecting..."
+        socketio.emit('response-text', error_message, namespace="/chatbot")
+        socketio.disconnect()
+        socketio.connect()
+    except Exception as e:
+        error_message = "An error occurred while processing the command: " + str(e)
+        traceback.print_exc()
+        socketio.emit('response-text', error_message, namespace="/chatbot")
             
             
 
@@ -125,6 +145,13 @@ def handle_filter():
     if emittedFilterData:
         socketio.emit('response', emittedFilterData,namespace='/filter')
         emittedFilterData={}
+
+@socketio.on('blotter-loaded',namespace='/place_order')
+def handle_placement():
+    print('Blotter Loaded')
+    global order_data
+    if order_data:
+        socketio.emit('response', order_data,namespace='/place_order')
 
 
 @socketio.on('disconnect',namespace="/filter")
@@ -184,6 +211,11 @@ def helper_modal(data):
 def text_command(command):
     handle_command(command)
     
+@socketio.on_error_default
+def handle_socket_error(e):
+    error_message = "An error occurred with the socket connection: " + str(e)
+    traceback.print_exc()
+    socketio.emit('response-text', error_message, namespace="/chatbot")
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=8000)
