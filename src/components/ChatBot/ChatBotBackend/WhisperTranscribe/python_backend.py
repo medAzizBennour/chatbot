@@ -39,19 +39,21 @@ def handle_command (message):
     response =requests.post(rasa_url, headers=headers, data=data)
     response_json = response.json()
     # Extracting the JSON payload from the text field
-    print(response_json)
     json_payload = response_json[0]['text']
 # Parsing the JSON payload into a dictionary
     payload_dict = json.loads(json_payload)
 # Extracting the intent, entities, and response message
     intent = payload_dict['intent']
+    print(intent)
     if intent not in intents:
         response_message=gpt.GptMessage(message)
         socketio.emit('response-text', response_message,namespace="/chatbot")
     else:
         response_message = payload_dict['response']
         socketio.emit('response-text', response_message,namespace="/chatbot")
-        if 'entities' in payload_dict:
+        if intent=='help':
+            socketio.emit('response', {'data': {'action': 'navigate', 'entities': {'page': 'help'}}},namespace='/navigate')
+        elif 'entities' in payload_dict:
             entities = payload_dict['entities']
             response_dict = {
             "data": { "action": intent,"entities":entities }   
@@ -65,11 +67,9 @@ def handle_command (message):
                 socketio.emit('response', response_dict,namespace='/navigate')
                 socketio.emit('response', emittedFilterData,namespace='/filter')
 
-
-            else:
+            else:                    
                 if intent == 'place_order' or intent == 'inform_stock':
                     namespace = '/place_order'
-                    print("ziko",response_dict)
                     order_data = response_dict
                 elif intent == 'navigate' or intent == 'inform_page':
                     namespace = '/navigate'
