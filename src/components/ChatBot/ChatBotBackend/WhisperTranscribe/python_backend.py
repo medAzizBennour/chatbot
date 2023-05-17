@@ -68,23 +68,21 @@ def handle_command (message):
                     }
                         if intent=='filter':
                             emittedFilterData=response_dict
-
                             filtered_obj=response_dict['data']['entities']['filtered_obj']
-
                             response_dict={'data': {'action': 'navigate', 'entities': {'page': filtered_obj}}}
                             socketio.emit('response', response_dict,namespace='/navigate')
                             socketio.emit('response', emittedFilterData,namespace='/filter')
-                        else:                    
-                            if intent == 'place_order' or intent == 'inform_stock':
-                                socketio.emit('response', {'data': {'action': 'navigate', 'entities': {'page': 'orders'}}},namespace='/navigate')
-                                namespace = '/place_order'
-                                order_data = response_dict
-                            elif intent == 'navigate' or intent == 'inform_page':
-                                namespace = '/navigate'
-                            else:
-                                namespace='/'+intent
+                        elif intent == 'place_order' or intent == 'inform_stock':
+                            order_data = response_dict
+                            response_dict={'data': {'action': 'navigate', 'entities': {'page': 'orders'}}}
+                            socketio.emit('response', response_dict,namespace='/navigate')
+                            socketio.emit('response', order_data,namespace='/place_order')
+                        elif intent == 'navigate' or intent == 'inform_page':
+                            socketio.emit('response', response_dict,namespace='/navigate')
+                        else:
+                            namespace='/'+intent
                             socketio.emit('response', response_dict,namespace=namespace)
-                            print(response_dict)
+
             else:
                 error_message = "No response received from the server."
                 socketio.emit('response-text', error_message, namespace="/chatbot")
