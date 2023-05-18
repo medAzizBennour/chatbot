@@ -30,10 +30,12 @@ intents=["greet","goodbye","place_order","search","filter","navigate","stock_pri
 
 emittedFilterData={}
 order_data={}
+order_data_blotter={}
 
 def handle_command (message):
     global emittedFilterData
     global order_data
+    global order_data_blotter
     headers = {'Content-Type': 'application/json'}
     try:
         data = json.dumps({'sender': 'test', 'message': message})
@@ -74,6 +76,7 @@ def handle_command (message):
                             socketio.emit('response', emittedFilterData,namespace='/filter')
                         elif intent == 'place_order' or intent == 'inform_stock':
                             order_data = response_dict
+                            order_data_blotter=response_dict
                             response_dict={'data': {'action': 'navigate', 'entities': {'page': 'orders'}}}
                             socketio.emit('response', response_dict,namespace='/navigate')
                             socketio.emit('response', order_data,namespace='/place_order')
@@ -115,14 +118,6 @@ def handle_command (message):
 #         print('commmaaand',command)
 #         socketio.emit('transcription_result', command)
 
-@socketio.on('connect',namespace="/buy_stock")
-def handle_connect():
-    print("place order Connected")
-
-
-@socketio.on('disconnect',namespace="/buy_stock")
-def handle_disconnect():
-    print("place order disconnected")
 
 @socketio.on('connect',namespace="/navigate")
 def handle_connect():
@@ -147,13 +142,16 @@ def handle_filter():
 @socketio.on('blotter-loaded',namespace='/place_order')
 def handle_placement():
     print('Blotter Loaded')
-    global order_data
-    if order_data:
-        socketio.emit('response', order_data,namespace='/place_order')
+    global order_data_blotter
+    if order_data_blotter:
+        socketio.emit('response', order_data_blotter,namespace='/place_order')
+
 
 
 @socketio.on('disconnect',namespace="/filter")
 def handle_disconnect():
+        global emittedFilterData
+        emittedFilterData={}
         print("Filter Disconnected")
 
 
@@ -172,13 +170,19 @@ def handle_connect():
 @socketio.on('disconnect',namespace="/place_order")
 def handle_disconnect():
     print("place_order disconnected")
+    global order_data_blotter
+    order_data_blotter={}
+
 @socketio.on('connect',namespace="/place_order_data")
 def handle_connect():
-    print('SENDING ', order_data)
+    global order_data
     socketio.emit('response',order_data,namespace='/place_order_data')
+    
 @socketio.on('disconnect',namespace="/place_order_data")
 def handle_disconnect():
+    global order_data
     print("Buy disconnected")
+    order_data={}
 
 
 @socketio.on('audio-file',namespace="/chatbot")
