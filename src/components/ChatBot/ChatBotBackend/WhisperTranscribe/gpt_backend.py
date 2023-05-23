@@ -9,7 +9,7 @@ messages=[{"role": "system", "content" : "You are a friendly trading chatbot. An
     {"role":"assistant","content":"Equity is fairness and justice in the distribution of resources, opportunities, and treatment among individuals and groups, regardless of their differences."}]
 def GptMessage(message):
     model="gpt-3.5-turbo"
-    prompt="you are a trading voice assistant that can answer the user's questions in short responses"
+    prompt="you are a trading voice assistant that can answer the user's questions in short responses. maximum 50 tokens of answer"
     messages.append({"role":"user","content":message})
     print(messages)
     response = openai.ChatCompletion.create(

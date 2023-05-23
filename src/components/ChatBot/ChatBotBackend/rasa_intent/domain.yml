@@ -1,0 +1,189 @@
+version: '3.1'
+intents:
+- affirm
+- bot_challenge
+- deny
+- filter
+- goodbye
+- greet
+- help
+- inform_page
+- inform_stock
+- mood_great
+- mood_unhappy
+- navigate
+- place_order
+- search
+- thank
+- stock_price
+entities:
+- page
+- criteria
+- destination
+- stock_company
+- order
+- stock_number
+- stock_list
+- stock_map
+- security_symbol
+slots:
+  stock_company:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: stock_company
+      intent:
+      - place_order
+      - inform_stock
+      - stock_price
+      - stock_news
+  security_symbol:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: security_symbol
+  stock_map:
+    type: list
+    mappings:
+    - type: from_entity
+      entity: stock_map
+  destination:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: destination
+      intent:
+      - place_order
+      - inform_stock
+  order:
+    type: categorical
+    influence_conversation: true
+    values:
+    - buy
+    - sell
+    mappings:
+    - type: from_entity
+      entity: order
+      intent:
+      - place_order
+  page:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: page
+      intent:
+      - navigate
+      - inform_page
+  stock_number:
+    type: float
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: stock_number
+      intent:
+      - place_order
+      - inform_stock
+  filtered_obj:
+    type: categorical
+    influence_conversation: true
+    values:
+    - orders
+    - placements
+    mappings:
+    - type: from_entity
+      entity: page
+      intent: 
+      - inform_page
+      - filter
+  criteria:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: criteria
+      intent:
+      - filter
+      - inform_filter
+  stock_list:
+    type: list
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: stock_list
+      intent: filter
+forms:
+  place_order_form:
+    required_slots:
+    - stock_company
+    - stock_number
+    - destination
+  filter_form:
+    required_slots:
+    - filtered_obj
+    - criteria
+  navigate_form:
+    required_slots:
+    - page
+responses:
+  utter_greet:
+  - text: Hi there! How can I assist you today?
+  - text: Hello! What can I help you with?
+  - text: Hey! How may I be of service?
+  - text: Greetings! What brings you here today?
+  - text: Welcome! What can I do for you?
+  - text: Good to see you! What can I assist you with?
+  - text: Salutations! How can I be of help?
+  utter_cheer_up:
+  - text: 'Here is something to cheer you up:'
+    image: https://i.imgur.com/nGF1K8f.jpg
+  utter_did_that_help:
+  - text: Did that help you?
+  utter_happy:
+  - text: Great, carry on!
+  utter_goodbye:
+  - text: Goodbye! It was great talking to you. Have a great day!
+  - text: Thank you for chatting with me. Have a good one!
+  - text: Goodbye for now. Let me know if you have any other questions in the future.
+  - text: See you later! Don't hesitate to come back if you need any help.
+  - text: Farewell! Have a wonderful day ahead.
+  - text: It was a pleasure helping you. Take care and goodbye!
+  utter_iamabot:
+  - text: I'm a trading chatbot. How can I help you today?
+  - text: I'm a trading bot designed to assist you with your queries.
+  - text: I'm a trading chatbot. What can I do for you?
+  utter_thank:
+  - text: You're welcome! Let me know if there's anything else I can do for you.
+  - text: No problem! It was my pleasure to assist you.
+  - text: Happy to help! Do come back if you need further assistance.
+  - text: Not a problem! Glad I could be of assistance.
+  - text: Anytime! Don't hesitate to reach out again if you need anything.
+  utter_help:
+  - text: Sure! Here's how you can use me!
+  - text: Here's how I can assist you!
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+actions:
+- action_submit_navigate_form
+- action_submit_filter_form
+- action_submit_search_form
+- action_submit_order_form
+- action_retrieve_data
+- action_ask_stock_company
+- action_ask_stock_number
+- action_ask_destination
+- validate_place_order_form
+- action_ask_page
+- validate_navigate_form
+- action_ask_filtered_obj
+- action_ask_criteria
+- validate_filter_form
+- action_social_expresses
+- action_default_fallback
+- action_stock_price
+- action_submit_stock_price
+- action_submit_stock_news
+

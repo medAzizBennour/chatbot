@@ -26,7 +26,7 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 
-intents=["greet","goodbye","place_order","search","filter","navigate","stock_price","bot_challenge","thank","help","inform_stock","inform_page"]
+intents=["greet","goodbye","place_order","search","filter","navigate","stock_price","bot_challenge","thank","help","inform_stock","inform_page","stock_price","stock_news"]
 
 emittedFilterData={}
 order_data={}
