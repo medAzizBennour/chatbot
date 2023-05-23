@@ -88,9 +88,9 @@ class SubmitStockNewsAction(Action):
                     news.append(news_item)
 
                 response_dict = {
-                    "intent": intent,
+                    "intenthh": intent,
                     "response": response_message,
-                    "news": json.dumps(news)
+                    "news": "news"
                 }
             else:
                response_message = f"The security {symbol} is not registered"
