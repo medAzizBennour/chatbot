@@ -7,3 +7,7 @@ export const addBotCommand = (payload: any) => ({
     type: "ADD_BOT_COMMAND",
     payload,
 });
+export const addNewsCommand = (payload: any) => ({
+    type: "ADD_NEWS_COMMAND",
+    payload,
+});

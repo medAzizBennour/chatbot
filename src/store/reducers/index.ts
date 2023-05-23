@@ -29,6 +29,12 @@ const chatReducer = (
                     },
                 ],
             };
+
+            case "ADD_NEWS_COMMAND":
+                console.log(action.payload)
+                return{
+                    ...state,divs:[...state.divs,{type:"news-command",text:action.payload.response,id:state.divs.length,news:action.payload.news},]
+                }
         default:
             return state;
     }

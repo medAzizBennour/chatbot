@@ -60,6 +60,10 @@ def handle_command (message):
                     socketio.emit('response-text', response_message,namespace="/chatbot")
                 else:
                     response_message = payload_dict['response']
+                if intent=='stock_news':
+                    print('news')
+                    socketio.emit('news', payload_dict,namespace="/chatbot")
+                else:    
                     socketio.emit('response-text', response_message,namespace="/chatbot")
                     if intent=='help':
                         socketio.emit('response', {'data': {'action': 'navigate', 'entities': {'page': 'help'}}},namespace='/navigate')

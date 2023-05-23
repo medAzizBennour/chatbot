@@ -8,6 +8,7 @@ export const initialState: IApplicationState = {
       type: 'bot-command',
       text: 'Hello, How can I help ?',
       id: 0,
+      news:[]
     },
   ],
 };

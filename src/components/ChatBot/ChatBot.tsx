@@ -14,9 +14,10 @@ import logo from "../../assets/images/linedata_logo.png";
 import img from "../../assets/images/chatbot.png";
 
 import io, { Socket } from "socket.io-client";
-import { addBotCommand, addUserCommand } from "../../store/actions";
+import { addBotCommand, addUserCommand,addNewsCommand } from "../../store/actions";
 import { ReactMic } from "react-mic";
 import HelpIcon from "@mui/icons-material/Help";
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 import RecordRTC from "recordrtc";
 import { Comment, Bars } from "react-loader-spinner";
@@ -91,10 +92,16 @@ const ChatBot = (): JSX.Element => {
         });
 
         socketRef.current.on("response-text", (result) => {
-            console.log("Transcription response:", result);
             setLoading(false);
             dispatch(addBotCommand(`${result}`));
         });
+        socketRef.current.on("news", (result) => {
+            setLoading(false);
+            dispatch(addNewsCommand(result));
+            console.log(result)
+        });
+
+       
         socketRef.current.on("disconnect", () => {
             socketRef?.current?.emit("disconnect");
         });
@@ -188,11 +195,30 @@ const ChatBot = (): JSX.Element => {
                 </div>
 
                 <div className="divs-container" ref={divsContainerRef}>
-                    {memoDivs.map((memoDiv) => (
-                        <div className={memoDiv.type} key={memoDiv.id}>
-                            <h4>{memoDiv.text}</h4>
-                        </div>
-                    ))}
+                {memoDivs?.map((memoDiv) =>
+  memoDiv.type === 'news-command' ? (
+    <div className="bot-command" key={memoDiv.id}>
+      <h4>{memoDiv.text}</h4>
+      
+        {memoDiv.news?.map((marketNews: { link: string | undefined; title: string | null | undefined; }) => (
+      <div style={{display:'flex', flexDirection:'row',alignItems:'center',gap:'5px',marginTop:'5px'}}>
+        <FiberManualRecordIcon  />   
+
+       <a className="news" style={{marginTop:'3px',fontWeight:'bold'}}  href={marketNews.link} key={marketNews.title}>
+            {marketNews.title}
+          </a>
+          </div>
+        ))}
+
+   
+    </div>
+  ) : (
+    <div className={memoDiv.type} key={memoDiv.id}>
+      <h4>{memoDiv.text}</h4>
+    </div>
+  )
+)}
+
                     {/* <div className="voice-loader"> */}
                     {transcriptionLoading && (
                         <div className="user-command">

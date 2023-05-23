@@ -46,6 +46,14 @@
     word-break: break-word;
     border: 1px solid rgb(7, 63, 115);
 }
+.news
+{
+    color:rgb(7, 63, 115)
+}
+.news:hover
+{
+    color: #3B82F6;
+}
 
 .comment-wrapper {
     align-self: flex-start;
