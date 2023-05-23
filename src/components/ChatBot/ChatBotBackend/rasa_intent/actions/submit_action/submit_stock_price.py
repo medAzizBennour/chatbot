@@ -47,7 +47,7 @@ class SubmitStockPriceAction(Action):
             response_message = f"Please provide a valid security symbol for me to assist you further."
             response_dict = {"intent": intent, "response": response_message}
         
-        dispatcher.utter_message(dispatcher.utter_message(json.dumps(response_dict)))
+        dispatcher.utter_message(json.dumps(response_dict))
 
         return []
     
@@ -80,24 +80,18 @@ class SubmitStockNewsAction(Action):
             if response:
                 info=response.json()['data'][:3]
                 response_message = f"Here are the latest news about {symbol} :"
-                buttons = []
-
-                i=1
+                news = []   
                 for element in info:
-                    nl = '\n'
                     title=element["title"]
                     link=element["link"]
-                    button = {
-                        "title": title,
-                        "payload": link
-                    }
-                    buttons.append(button)
+                    news_item = {"title": title, "link": link}
+                    news.append(news_item)
 
-                    json_res =f"Title {i}: <a href='{link}'>{title}</a>"
-                    i+=1
-                dispatcher.utter_message(text=response_message, buttons=buttons)
-
-                   # response_message+=f"{nl} {json_res}"
+                response_dict = {
+                    "intent": intent,
+                    "response": response_message,
+                    "news": json.dumps(news)
+                }
             else:
                response_message = f"The security {symbol} is not registered"
             response_dict = {"intent": intent, "response":response_message }
@@ -106,6 +100,6 @@ class SubmitStockNewsAction(Action):
             response_message = f"Please provide a valid security symbol for me to assist you further."
             response_dict = {"intent": intent, "response": response_message}
         
-        #dispatcher.utter_message(json.dumps(response_dict))
+        dispatcher.utter_message(json.dumps(response_dict))
 
         return []
